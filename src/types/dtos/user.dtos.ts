@@ -1,7 +1,5 @@
 ﻿export class userToCreateDTO{
-    name? : string;
+    id?: number;
+    username? : string;
     password? : string;
-    email? : string;
-    firstname? : string;
-
 }

@@ -35,6 +35,15 @@ export const getAnimes = async (filters: AnimeFilter): Promise<AnimeEntity[]> =>
     return query.getMany();
 }
 
+export const getAnimeById = async (id: number): Promise<AnimeEntity | null> => {
+    return animeRepository().findOne({
+        where: {id},
+        relations: {categorie: true, genres: true, themes: true, producteurs: true, sources: {type: true}},
+    });
+}
+
+const toRefs = (ids?: number[]) => (ids ?? []).map((id) => ({id}));
+
 export const addAnime = async (anime: animeToCreateInput): Promise<AnimeEntity> => {
     const created = animeRepository().create({
         nom: anime.nom,
@@ -42,6 +51,11 @@ export const addAnime = async (anime: animeToCreateInput): Promise<AnimeEntity> 
         image: anime.image ?? null,
         dateAnnonce: anime.dateAnnonce ?? null,
         categorie: anime.idCategorie ? {id: anime.idCategorie} : null,
+        genres: toRefs(anime.idGenres),
+        themes: toRefs(anime.idThemes),
+        producteurs: toRefs(anime.idProducteurs),
+        sources: toRefs(anime.idSources),
     });
-    return animeRepository().save(created);
+    const saved = await animeRepository().save(created);
+    return getAnimeById(saved.id);
 }

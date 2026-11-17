@@ -2,7 +2,7 @@ export class animeToCreateInput {
     nom!: string;
     synopsis?: string | null;
     image?: string | null;
-    dateAnnonce?: Date | null;
+    dateAnnonce?: string | null;
     idCategorie?: number | null;
     idGenres?: number[];
     idThemes?: number[];
@@ -14,7 +14,7 @@ export class animeToUpdateInput {
     nom?: string;
     synopsis?: string | null;
     image?: string | null;
-    dateAnnonce?: Date | null;
+    dateAnnonce?: string | null;
     idCategorie?: number | null;
     idGenres?: number[];
     idThemes?: number[];

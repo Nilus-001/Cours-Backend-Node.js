@@ -19,6 +19,9 @@ export const addAnime = async (req: Request, res: Response) => {
         const result = await animeService.addAnime(req.body);
         res.status(201).send(result);
     } catch (e) {
+        if (e?.driverError?.code === 'ER_NO_REFERENCED_ROW_2') {
+            return res.status(400).json({error: "Catégorie, genre, thème, producteur ou source inexistant"});
+        }
         console.error(e);
         res.status(500).json({error: "Erreur lors de l'ajout de l'anime"});
     }

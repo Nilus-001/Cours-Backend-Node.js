@@ -24,7 +24,7 @@ export class AnimeEntity {
     image!: string | null;
 
     @Column('date', {name: 'date_annonce', nullable: true})
-    dateAnnonce!: Date | null;
+    dateAnnonce!: string | null;
 
     @ManyToOne(() => CategorieEntity, (categorie) => categorie.animes, {nullable: true})
     @JoinColumn({name: 'id_categorie'})
