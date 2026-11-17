@@ -1,65 +1,47 @@
-﻿import Anime from "../types/anime.type";
 import AnimeFilter from "../types/animeFilter.type";
 import {db} from "../configs/database/typeorm.config";
 import {AnimeEntity} from "../entities/anime.entity";
+import {animeToCreateInput} from "../types/inputs/anime.input";
 
-let dataAnime: Anime[] = [
-    {
-        id: 1,
-        name: "Fullmetal Alchemist: Brotherhood",
-        date: new Date("2009-04-05"),
-        url: "https://myanimelist.net/anime/5114",
-        img: "https://example.com/img/fmab.jpg",
-        rating: 9.1,
-    },
-    {
-        id: 2,
-        name: "Steins;Gate",
-        date: new Date("2011-04-06"),
-        url: "https://myanimelist.net/anime/9253",
-        img: "https://example.com/img/steins-gate.jpg",
-        rating: 9.0,
-    },
-    {
-        id: 3,
-        name: "Cowboy Bebop",
-        date: new Date("1998-04-03"),
-        url: "https://myanimelist.net/anime/1",
-        img: "https://example.com/img/cowboy-bebop.jpg",
-        rating: 8.8,
-    },
-];
+const animeRepository = () => db.getRepository(AnimeEntity);
 
+export const getAnimes = async (filters: AnimeFilter): Promise<AnimeEntity[]> => {
+    const query = animeRepository()
+        .createQueryBuilder('anime')
+        .leftJoinAndSelect('anime.categorie', 'categorie')
+        .leftJoinAndSelect('anime.genres', 'genre')
+        .leftJoinAndSelect('anime.themes', 'theme')
+        .leftJoinAndSelect('anime.producteurs', 'producteur')
+        .leftJoinAndSelect('anime.sources', 'source')
+        .leftJoinAndSelect('source.type', 'type')
+        .orderBy('anime.nom', 'ASC');
 
-export const getAnimes = (filters:AnimeFilter) => {
+    if (filters.nom) {
+        query.andWhere('LOWER(anime.nom) LIKE LOWER(:nom)', {nom: `%${filters.nom}%`});
+    }
+    if (filters.dateAnnonce) {
+        query.andWhere('anime.dateAnnonce = :dateAnnonce', {dateAnnonce: filters.dateAnnonce});
+    }
+    if (filters.idCategorie) {
+        query.andWhere('categorie.id = :idCategorie', {idCategorie: filters.idCategorie});
+    }
+    if (filters.idGenre) {
+        query.andWhere('anime.id IN (SELECT ea.id_anime FROM est_attribuee ea WHERE ea.id_genre = :idGenre)', {idGenre: filters.idGenre});
+    }
+    if (filters.idTheme) {
+        query.andWhere('anime.id IN (SELECT p.id_anime FROM posseder p WHERE p.id_theme = :idTheme)', {idTheme: filters.idTheme});
+    }
 
-    // const animeFiltered = dataAnime.filter((anime) => {
-    //     if (filters.name && !anime.name.toLowerCase().includes(filters.name.toLowerCase())) {
-    //         return false;
-    //     }
-    //     if (filters.date && anime.date.toISOString().split('T')[0] !== filters.date) {
-    //         return false;
-    //     }
-    //     if (filters.url && anime.url !== filters.url) {
-    //         return false;
-    //     }
-    //     if (filters.rating && anime.rating !== filters.rating) {
-    //         return false;
-    //     }
-    //     return true;
-    // });
-
-
-    return dataAnime.map((anime) => anime);
+    return query.getMany();
 }
 
-export const addAnime = (anime:Anime) => {
-
-    const repo = db.getRepository(AnimeEntity);
-    const newAnime = repo.create(anime);
-    repo.save(newAnime).then(r => {
-        return newAnime;
+export const addAnime = async (anime: animeToCreateInput): Promise<AnimeEntity> => {
+    const created = animeRepository().create({
+        nom: anime.nom,
+        synopsis: anime.synopsis ?? null,
+        image: anime.image ?? null,
+        dateAnnonce: anime.dateAnnonce ?? null,
+        categorie: anime.idCategorie ? {id: anime.idCategorie} : null,
     });
-
-
+    return animeRepository().save(created);
 }

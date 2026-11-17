@@ -1,4 +1,4 @@
-﻿import { IsString, IsNotEmpty, IsUrl, IsNumber, IsInt, Min, Max, IsOptional, IsDateString } from "class-validator";
+import { IsString, IsNotEmpty, IsUrl, IsNumber, IsInt, Min, Max, IsOptional, IsDateString } from "class-validator";
 import { Type } from "class-transformer";
 
 export class animeToCreateDto {
@@ -57,20 +57,27 @@ export class animeIdParamDto {
 export class animeFilterDto {
     @IsOptional()
     @IsString()
-    name?: string;
+    nom?: string;
 
     @IsOptional()
     @IsDateString()
-    date?: string;
-
-    @IsOptional()
-    @IsUrl()
-    url?: string;
+    dateAnnonce?: string;
 
     @IsOptional()
     @Type(() => Number)
-    @IsNumber()
-    @Min(0)
-    @Max(10)
-    rating?: number;
+    @IsInt()
+    @Min(1)
+    idCategorie?: number;
+
+    @IsOptional()
+    @Type(() => Number)
+    @IsInt()
+    @Min(1)
+    idGenre?: number;
+
+    @IsOptional()
+    @Type(() => Number)
+    @IsInt()
+    @Min(1)
+    idTheme?: number;
 }

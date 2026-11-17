@@ -1,5 +1,6 @@
-﻿import 'reflect-metadata'
+import 'reflect-metadata'
 import {DataSource} from "typeorm";
+import {entities} from "../../entities";
 
 export const db = new DataSource({
     type: 'mysql',
@@ -7,9 +8,9 @@ export const db = new DataSource({
     port: 3306,
     username: 'root',
     password: '',
-    database: 'animeHere_database',
+    database: 'animehere_database',
 
-    entities: [],
+    entities,
 
-    synchronize: true,
+    synchronize: false,
 })

@@ -1,13 +1,14 @@
-﻿import * as animeRepository from '../repositories/anime.repository';
+import * as animeRepository from '../repositories/anime.repository';
 import AnimeFilter from '../types/animeFilter.type'
-import Anime from "../types/anime.type";
+import {animeToCreateInput} from "../types/inputs/anime.input";
+import {animePresenter, toAnimePresenter} from "../types/presenters/anime.presenter";
 
-export const getAnimes =  (filters : AnimeFilter) => {
-    const animeResult = animeRepository.getAnimes(filters);
-    return animeResult;
+export const getAnimes = async (filters: AnimeFilter): Promise<animePresenter[]> => {
+    const animes = await animeRepository.getAnimes(filters);
+    return animes.map(toAnimePresenter);
 }
 
-export const addAnime = (anime : Anime) => {
-    const animeResult = animeRepository.addAnime(anime);
-    return animeResult;
+export const addAnime = async (anime: animeToCreateInput): Promise<animePresenter> => {
+    const created = await animeRepository.addAnime(anime);
+    return toAnimePresenter(created);
 }
