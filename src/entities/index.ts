@@ -9,6 +9,7 @@ import {GenreEntity} from "./genre.entity";
 import {LangueEntity} from "./langue.entity";
 import {NoterEntity} from "./noter.entity";
 import {ProducteurEntity} from "./producteur.entity";
+import {RefreshTokenEntity} from "./refresh-token.entity";
 import {SaisonEntity} from "./saison.entity";
 import {SourceEntity} from "./source.entity";
 import {SourceOfficielEntity} from "./source-officiel.entity";
@@ -30,6 +31,7 @@ export const entities = [
     LangueEntity,
     NoterEntity,
     ProducteurEntity,
+    RefreshTokenEntity,
     SaisonEntity,
     SourceEntity,
     SourceOfficielEntity,

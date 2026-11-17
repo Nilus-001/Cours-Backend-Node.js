@@ -6,6 +6,7 @@ import cors from 'cors';
 import animeRoutes from "./routes/anime.routes";
 import {db} from "./configs/database/typeorm.config";
 import userRoutes from "./routes/user.routes";
+import authRoutes from "./routes/auth.routes";
 
 const PORT = 8080;
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/anime', animeRoutes);
 app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.json({ message: 'API OK' });

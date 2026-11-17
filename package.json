@@ -7,8 +7,8 @@
   "type": "module",
   "main": "server.ts",
   "scripts": {
-    "start": "tsx --tsconfig tsconfig.json src/server.ts",
-    "dev": "tsx watch --tsconfig tsconfig.json src/server.ts",
+    "start": "tsx --env-file=.env.example --tsconfig tsconfig.json src/server.ts",
+    "dev": "tsx watch --env-file=.env.example --tsconfig tsconfig.json src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^26.6.6",
     "tsup": "^9.0.0",
     "tsx": "^4.23.15",

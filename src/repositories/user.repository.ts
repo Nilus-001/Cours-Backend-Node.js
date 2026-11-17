@@ -28,6 +28,14 @@ export const getUserByIdentifiant = async (identifiant: string): Promise<UserEnt
         .getOne();
 }
 
+export const getUserWithPasswordByIdentifiant = async (identifiant: string): Promise<UserEntity | null> => {
+    return userRepository()
+        .createQueryBuilder('user')
+        .addSelect('user.motDePasse')
+        .where('LOWER(user.identifiant) = LOWER(:identifiant)', {identifiant})
+        .getOne();
+}
+
 export const addUser = async (user: userToCreateInput): Promise<UserEntity> => {
     const created = userRepository().create({
         identifiant: user.identifiant,
