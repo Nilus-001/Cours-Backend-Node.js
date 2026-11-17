@@ -1,5 +1,7 @@
 ﻿import Anime from "../types/anime.type";
 import AnimeFilter from "../types/animeFilter.type";
+import {db} from "../configs/database/typeorm.config";
+import {AnimeEntity} from "../entities/anime.entity";
 
 let dataAnime: Anime[] = [
     {
@@ -47,10 +49,12 @@ export const getAnimes = (filters:AnimeFilter) => {
         return true;
     });
 
+
     return animeFiltered
 }
 
 export const addAnime = (anime:Anime) => {
+    // const createdAnime = db.getRepository(AnimeEntity).create(anime);
     dataAnime.push(anime);
     return anime;
 }
