@@ -5,6 +5,7 @@ import 'reflect-metadata';
 import cors from 'cors';
 import animeRoutes from "./routes/anime.routes";
 import {db} from "./configs/database/typeorm.config";
+import userRoutes from "./routes/user.routes";
 
 const PORT = 8080;
 
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/anime', animeRoutes);
-
+app.use('/user', userRoutes);
 
 app.get('/', (req, res) => {
     res.json({ message: 'API OK' });

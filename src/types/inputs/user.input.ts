@@ -1,7 +1,9 @@
-﻿export class userToCreateInput{
-    name? : string;
-    hashedPassword? : string;
-    email? : string;
-    firstname? : string;
+export class userToCreateInput {
+    identifiant!: string;
+    hashedPassword!: string;
+}
 
+export class userToUpdateInput {
+    identifiant?: string;
+    hashedPassword?: string;
 }
