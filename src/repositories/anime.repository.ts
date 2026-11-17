@@ -33,28 +33,33 @@ let dataAnime: Anime[] = [
 
 export const getAnimes = (filters:AnimeFilter) => {
 
-    const animeFiltered = dataAnime.filter((anime) => {
-        if (filters.name && !anime.name.toLowerCase().includes(filters.name.toLowerCase())) {
-            return false;
-        }
-        if (filters.date && anime.date.toISOString().split('T')[0] !== filters.date) {
-            return false;
-        }
-        if (filters.url && anime.url !== filters.url) {
-            return false;
-        }
-        if (filters.rating && anime.rating !== filters.rating) {
-            return false;
-        }
-        return true;
-    });
+    // const animeFiltered = dataAnime.filter((anime) => {
+    //     if (filters.name && !anime.name.toLowerCase().includes(filters.name.toLowerCase())) {
+    //         return false;
+    //     }
+    //     if (filters.date && anime.date.toISOString().split('T')[0] !== filters.date) {
+    //         return false;
+    //     }
+    //     if (filters.url && anime.url !== filters.url) {
+    //         return false;
+    //     }
+    //     if (filters.rating && anime.rating !== filters.rating) {
+    //         return false;
+    //     }
+    //     return true;
+    // });
 
 
-    return animeFiltered
+    return dataAnime.map((anime) => anime);
 }
 
 export const addAnime = (anime:Anime) => {
-    // const createdAnime = db.getRepository(AnimeEntity).create(anime);
-    dataAnime.push(anime);
-    return anime;
+
+    const repo = db.getRepository(AnimeEntity);
+    const newAnime = repo.create(anime);
+    repo.save(newAnime).then(r => {
+        return newAnime;
+    });
+
+
 }
