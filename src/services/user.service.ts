@@ -5,6 +5,7 @@ import {userToCreateDTO, userToUpdateDTO} from "../types/dtos/user.dtos";
 import {userToUpdateInput} from "../types/inputs/user.input";
 import {toUserPresenter, userPresenter} from "../types/presenters/user.presenter";
 import {UserDependenciesError, UserIdentifiantUsedError, UserNotFoundError} from "../core/http/errors/user.errors";
+import {emit} from "../core/events/eventBus";
 
 const SALT_ROUNDS = 10;
 
@@ -39,6 +40,7 @@ export const addUser = async (user: userToCreateDTO): Promise<userPresenter> => 
         email: user.email,
         hashedPassword: await bcrypt.hash(user.motDePasse, SALT_ROUNDS),
     });
+    emit('user.created', {id: created.id, identifiant: created.identifiant, email: created.email});
     return toUserPresenter(created);
 }
 

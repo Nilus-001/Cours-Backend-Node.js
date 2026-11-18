@@ -8,6 +8,7 @@ import {db} from "./core/configs/database/typeorm.config";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import {errorMiddleware, notFoundMiddleware} from "./middlewares/api.middleware";
+import {registerListeners} from "./listeners";
 
 const PORT = 8080;
 
@@ -30,6 +31,7 @@ app.use(errorMiddleware);
 
 try{
     await db.initialize();
+    registerListeners();
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     })
