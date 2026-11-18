@@ -36,6 +36,7 @@ export const addUser = async (user: userToCreateDTO): Promise<userPresenter> => 
     await ensureIdentifiantDisponible(user.identifiant);
     const created = await userRepository.addUser({
         identifiant: user.identifiant,
+        email: user.email,
         hashedPassword: await bcrypt.hash(user.motDePasse, SALT_ROUNDS),
     });
     return toUserPresenter(created);
@@ -48,6 +49,9 @@ export const updateUser = async (id: number, user: userToUpdateDTO): Promise<use
     if (user.identifiant !== undefined) {
         await ensureIdentifiantDisponible(user.identifiant, id);
         input.identifiant = user.identifiant;
+    }
+    if (user.email !== undefined) {
+        input.email = user.email;
     }
     if (user.motDePasse !== undefined) {
         input.hashedPassword = await bcrypt.hash(user.motDePasse, SALT_ROUNDS);

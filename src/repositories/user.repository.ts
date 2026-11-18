@@ -39,6 +39,7 @@ export const getUserWithPasswordByIdentifiant = async (identifiant: string): Pro
 export const addUser = async (user: userToCreateInput): Promise<UserEntity> => {
     const created = userRepository().create({
         identifiant: user.identifiant,
+        email: user.email ?? null,
         motDePasse: user.hashedPassword,
     });
     const saved = await userRepository().save(created);
@@ -48,6 +49,7 @@ export const addUser = async (user: userToCreateInput): Promise<UserEntity> => {
 export const updateUser = async (id: number, user: userToUpdateInput): Promise<UserEntity | null> => {
     const changes: Partial<UserEntity> = {};
     if (user.identifiant !== undefined) changes.identifiant = user.identifiant;
+    if (user.email !== undefined) changes.email = user.email;
     if (user.hashedPassword !== undefined) changes.motDePasse = user.hashedPassword;
 
     if (Object.keys(changes).length > 0) {

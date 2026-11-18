@@ -16,6 +16,10 @@ export function ValidateDto<T extends object> (dto: ClassConstructor<T>, source:
             throw errors;
         }
 
+        if (source === "body") {
+            req.body = object;
+        }
+
         next()
     }
 }
