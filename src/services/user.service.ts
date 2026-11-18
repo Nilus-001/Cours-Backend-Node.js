@@ -4,21 +4,21 @@ import UserFilter from "../types/userFilter.type";
 import {userToCreateDTO, userToUpdateDTO} from "../types/dtos/user.dtos";
 import {userToUpdateInput} from "../types/inputs/user.input";
 import {toUserPresenter, userPresenter} from "../types/presenters/user.presenter";
-import {HttpError} from "../types/errors/httpError";
+import {UserDependenciesError, UserIdentifiantUsedError, UserNotFoundError} from "../core/http/errors/user.errors";
 
 const SALT_ROUNDS = 10;
 
 const ensureIdentifiantDisponible = async (identifiant: string, idActuel?: number) => {
     const existant = await userRepository.getUserByIdentifiant(identifiant);
     if (existant && existant.id !== idActuel) {
-        throw new HttpError(409, "Cet identifiant est déjà utilisé");
+        throw new UserIdentifiantUsedError({identifiant});
     }
 }
 
 const getExistingUser = async (id: number) => {
     const user = await userRepository.getUserById(id);
     if (!user) {
-        throw new HttpError(404, "Utilisateur introuvable");
+        throw new UserNotFoundError({id});
     }
     return user;
 }
@@ -63,7 +63,7 @@ export const deleteUser = async (id: number): Promise<void> => {
         await userRepository.deleteUser(id);
     } catch (e) {
         if (e?.driverError?.code === 'ER_ROW_IS_REFERENCED_2') {
-            throw new HttpError(409, "Impossible de supprimer : l'utilisateur a des avis ou des animes dans sa liste");
+            throw new UserDependenciesError({id});
         }
         throw e;
     }

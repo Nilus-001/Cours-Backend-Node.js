@@ -13,7 +13,7 @@ export function ValidateDto<T extends object> (dto: ClassConstructor<T>, source:
         const errors = await validate(object, { whitelist : true , forbidNonWhitelisted : true });
 
         if (errors.length > 0) {
-            return res.status(400).json({ error: "Données invalides", details: errors });
+            throw errors;
         }
 
         next()

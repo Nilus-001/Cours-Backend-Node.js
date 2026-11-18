@@ -1,5 +1,5 @@
 import {LessThan} from "typeorm";
-import {db} from "../configs/database/typeorm.config";
+import {db} from "../core/configs/database/typeorm.config";
 import {RefreshTokenEntity} from "../entities/refresh-token.entity";
 
 const refreshTokenRepository = () => db.getRepository(RefreshTokenEntity);

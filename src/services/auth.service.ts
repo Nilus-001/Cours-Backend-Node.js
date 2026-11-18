@@ -5,7 +5,7 @@ import * as refreshTokenRepository from "../repositories/refresh-token.repositor
 import * as jwtService from "./jwt.service";
 import {userLoginDTO} from "../types/dtos/user.dtos";
 import {TokenPair} from "../types/auth.type";
-import {HttpError} from "../types/errors/httpError";
+import {InvalidCredentialsError, RefreshTokenInvalidError, RefreshTokenReusedError} from "../core/http/errors/auth.errors";
 
 const hashToken = (token: string): string => createHash('sha256').update(token).digest('hex');
 
@@ -20,7 +20,7 @@ export const login = async (credentials: userLoginDTO): Promise<TokenPair> => {
     const user = await userRepository.getUserWithPasswordByIdentifiant(credentials.identifiant);
     const passwordOk = user && await bcrypt.compare(credentials.motDePasse, user.motDePasse);
     if (!passwordOk) {
-        throw new HttpError(401, "Identifiant ou mot de passe incorrect");
+        throw new InvalidCredentialsError();
     }
     await refreshTokenRepository.deleteExpiredRefreshTokens();
     return generateTokens(user.id, user.identifiant);
@@ -31,13 +31,13 @@ export const refresh = async (refreshToken: string): Promise<TokenPair> => {
     try {
         payload = jwtService.verifyRefreshToken(refreshToken);
     } catch {
-        throw new HttpError(401, "Refresh token invalide ou expiré");
+        throw new RefreshTokenInvalidError();
     }
 
     const stored = await refreshTokenRepository.getRefreshTokenByHash(hashToken(refreshToken));
     if (!stored) {
         await refreshTokenRepository.deleteAllRefreshTokensOfUser(payload.sub);
-        throw new HttpError(401, "Refresh token déjà utilisé, toutes les sessions ont été fermées");
+        throw new RefreshTokenReusedError();
     }
 
     await refreshTokenRepository.deleteRefreshTokenByHash(stored.tokenHash);

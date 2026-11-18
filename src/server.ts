@@ -4,9 +4,10 @@ import 'reflect-metadata';
 // @ts-ignore
 import cors from 'cors';
 import animeRoutes from "./routes/anime.routes";
-import {db} from "./configs/database/typeorm.config";
+import {db} from "./core/configs/database/typeorm.config";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
+import {errorMiddleware, notFoundMiddleware} from "./middlewares/api.middleware";
 
 const PORT = 8080;
 
@@ -22,6 +23,9 @@ app.use('/auth', authRoutes);
 app.get('/', (req, res) => {
     res.json({ message: 'API OK' });
 });
+
+app.use(notFoundMiddleware);
+app.use(errorMiddleware);
 
 
 try{

@@ -1,4 +1,4 @@
-import {db} from "../configs/database/typeorm.config";
+import {db} from "../core/configs/database/typeorm.config";
 import {UserEntity} from "../entities/user.entity";
 import UserFilter from "../types/userFilter.type";
 import {userToCreateInput, userToUpdateInput} from "../types/inputs/user.input";
