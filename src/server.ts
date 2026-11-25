@@ -3,7 +3,9 @@ import express from 'express';
 import 'reflect-metadata';
 // @ts-ignore
 import cors from 'cors';
-import animeRoutes from "./routes/anime.routes";
+import swaggerUi from 'swagger-ui-express';
+import {openapiSpec} from "./core/docs/openapi";
+import animeRoutes from "./context/anime/api/routes/anime.routes";
 import {db} from "./core/configs/database/typeorm.config";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
@@ -16,6 +18,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.get('/api-docs.json', (req, res) => {
+    res.json(openapiSpec);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.use('/anime', animeRoutes);
 app.use('/user', userRoutes);
