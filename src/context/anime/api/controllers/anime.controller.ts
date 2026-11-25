@@ -1,15 +1,31 @@
 import {Request, Response} from "express";
 import {plainToInstance} from "class-transformer";
-import * as animeService from "../../../../services/anime.service";
-import {animeFilterDto, animeIdParamDto} from "../dtos/anime.dto";
+import {animeIdParamDto} from "../dtos/anime.dto";
+import {animeFilterDto} from "../dtos/animeFilter.dto";
+import {animeFilterInput} from "../../app/inputs/animeFilter.input";
+import {GetAnimesUseCase} from "../../app/usecases/get-anime.usecase";
+import {typeAnimeRepository} from "../../infra/persistances/repositories/anime.type.repository";
+import {toAnimeListPresenter} from "../presenters/animeList.presenter";
+import {toAnimePresenter} from "../presenters/anime.presenter";
+import {GetAnimeByIdUseCase} from "../../app/usecases/get-anime-id.usecase";
+import {AddAnimeUseCase} from "../../app/usecases/add-anime.usecase";
+
+const getAnimesUseCase = new GetAnimesUseCase(typeAnimeRepository);
+const getAnimeByIdUseCase = new GetAnimeByIdUseCase(typeAnimeRepository);
+const addAnimeUseCase = new AddAnimeUseCase(typeAnimeRepository);
 
 export const getAnimes = async (req: Request, res: Response) => {
-    const filters = plainToInstance(animeFilterDto, req.query);
-    res.status(200).send(await animeService.getAnimes(filters));
+    const {nom, dateAnnonce, idCategorie, idGenre, idTheme} = plainToInstance(animeFilterDto, req.query);
+    const filters: animeFilterInput = {nom: nom?.trim(), dateAnnonce, idCategorie, idGenre, idTheme};
+
+    const animes = await getAnimesUseCase.execute(filters);
+
+    res.status(200).send(toAnimeListPresenter(filters, animes));
 }
 
 export const addAnime = async (req: Request, res: Response) => {
-    res.status(201).send(await animeService.addAnime(req.body));
+    const anime = await addAnimeUseCase.execute(req.body);
+    res.status(201).send(toAnimePresenter(anime));
 }
 
 export const deleteAnime = (req , res) => {
@@ -20,5 +36,8 @@ export const updateAnime = (req , res) => {
 }
 export const getAnimeById = async (req: Request, res: Response) => {
     const {id} = plainToInstance(animeIdParamDto, req.params);
-    res.status(200).send(await animeService.getAnimeById(id));
+
+    const anime = await getAnimeByIdUseCase.execute(id);
+
+    res.status(200).send(toAnimePresenter(anime));
 }

@@ -1,11 +1,11 @@
-import AnimeFilter from "../types/animeFilter.type";
-import {db} from "../core/configs/database/typeorm.config";
-import {AnimeEntity} from "../entities/anime.entity";
-import {animeToCreateInput} from "../context/anime/app/inputs/anime.input";
+import {db} from "../../../../../core/configs/database/typeorm.config";
+import {AnimeEntity} from "../../../../../entities/anime.entity";
+import {animeToCreateInput} from "../../../app/inputs/anime.input";
+import {animeFilterInput} from "../../../app/inputs/animeFilter.input";
 
 const animeRepository = () => db.getRepository(AnimeEntity);
 
-export const getAnimes = async (filters: AnimeFilter): Promise<AnimeEntity[]> => {
+export const getAnimes = async (filters: animeFilterInput): Promise<AnimeEntity[]> => {
     const query = animeRepository()
         .createQueryBuilder('anime')
         .leftJoinAndSelect('anime.categorie', 'categorie')
