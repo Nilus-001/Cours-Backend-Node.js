@@ -1,6 +1,6 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Relation} from "typeorm";
-import {AvisEntity} from "./avis.entity";
-import {VuOrAVoirEntity} from "./vu-or-a-voir.entity";
+import {AvisEntity} from "../../../../../entities/avis.entity";
+import {VuOrAVoirEntity} from "../../../../../entities/vu-or-a-voir.entity";
 
 @Entity('user_')
 export class UserEntity {

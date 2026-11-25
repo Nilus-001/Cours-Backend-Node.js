@@ -8,12 +8,12 @@
     super(message);
     }
 
-    toJson(){
-        return {
-            code : this.code,
-            errCode : this.errCode,
-            message : this.message,
-            meta : this.meta
-        }
+toJson(){
+    return {
+        code : this.code,
+        errCode : this.errCode,
+        message : this.message,
+        meta : this.meta
     }
+}
 }

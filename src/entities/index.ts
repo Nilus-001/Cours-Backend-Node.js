@@ -16,7 +16,7 @@ import {SourceOfficielEntity} from "../context/anime/infra/persistances/entities
 import {StudioEntity} from "../context/anime/infra/persistances/entities/studio.entity";
 import {ThemeEntity} from "../context/anime/infra/persistances/entities/theme.entity";
 import {TypeEntity} from "../context/anime/infra/persistances/entities/type.entity";
-import {UserEntity} from "./user.entity";
+import {UserEntity} from "../context/user/infra/persistances/entities/user.entity";
 import {VuOrAVoirEntity} from "./vu-or-a-voir.entity";
 
 export const entities = [

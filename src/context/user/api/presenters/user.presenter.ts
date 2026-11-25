@@ -1,4 +1,4 @@
-import {UserEntity} from "../../entities/user.entity";
+import {UserEntity} from "../../infra/persistances/entities/user.entity";
 
 export class userPresenter {
     id!: number;

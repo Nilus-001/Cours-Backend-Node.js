@@ -1,4 +1,4 @@
-import {on} from '../core/events/eventBus';
+import {on} from '../../../../core/events/eventBus';
 
 export const registerUserListeners = () => {
     on('user.created', async ({id, email}) => {

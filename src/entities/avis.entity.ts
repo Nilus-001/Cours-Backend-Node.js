@@ -1,7 +1,7 @@
 import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation} from "typeorm";
 import {CategorieAppreciationEntity} from "./categorie-appreciation.entity";
 import {AnimeEntity} from "../context/anime/infra/persistances/entities/anime.entity";
-import {UserEntity} from "./user.entity";
+import {UserEntity} from "../context/user/infra/persistances/entities/user.entity";
 
 @Entity('avis')
 export class AvisEntity {

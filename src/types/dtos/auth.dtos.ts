@@ -6,3 +6,13 @@ export class refreshTokenDTO {
     @IsJWT({message: "Le refresh token est invalide"})
     refreshToken!: string;
 }
+
+export class userLoginDTO {
+    @IsString()
+    @IsNotEmpty({message: "L'identifiant est obligatoire"})
+    identifiant!: string;
+
+    @IsString()
+    @IsNotEmpty({message: "Le mot de passe est obligatoire"})
+    motDePasse!: string;
+}

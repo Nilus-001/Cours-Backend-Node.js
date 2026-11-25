@@ -46,25 +46,9 @@ export class userToUpdateDTO {
     motDePasse?: string;
 }
 
-export class userLoginDTO {
-    @IsString()
-    @IsNotEmpty({message: "L'identifiant est obligatoire"})
-    identifiant!: string;
-
-    @IsString()
-    @IsNotEmpty({message: "Le mot de passe est obligatoire"})
-    motDePasse!: string;
-}
-
 export class userIdParamDTO {
     @Type(() => Number)
     @IsInt({message: "L'id doit être un entier"})
     @Min(1)
     id!: number;
-}
-
-export class userFilterDTO {
-    @IsOptional()
-    @IsString()
-    identifiant?: string;
 }

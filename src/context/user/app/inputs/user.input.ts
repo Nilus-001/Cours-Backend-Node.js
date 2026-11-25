@@ -9,3 +9,15 @@ export class userToUpdateInput {
     email?: string | null;
     hashedPassword?: string;
 }
+
+export class userToAddInput {
+    identifiant!: string;
+    email?: string | null;
+    motDePasse!: string;
+}
+
+export class userToModifyInput {
+    identifiant?: string;
+    email?: string | null;
+    motDePasse?: string;
+}

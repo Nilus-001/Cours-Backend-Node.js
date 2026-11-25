@@ -1,4 +1,4 @@
-import {DomainError} from "../errorDomain";
+import {DomainError} from "../../../../core/http/errorDomain";
 
 export class UserNotFoundError extends DomainError {
     constructor(meta?: any) {

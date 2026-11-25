@@ -1,11 +1,11 @@
-import {db} from "../core/configs/database/typeorm.config";
+import {db} from "../../../../../core/configs/database/typeorm.config";
 import {UserEntity} from "../entities/user.entity";
-import UserFilter from "../types/userFilter.type";
-import {userToCreateInput, userToUpdateInput} from "../types/inputs/user.input";
+import {userFilterInput} from "../../../app/inputs/userFilter.input";
+import {userToCreateInput, userToUpdateInput} from "../../../app/inputs/user.input";
 
 const userRepository = () => db.getRepository(UserEntity);
 
-export const getUsers = async (filters: UserFilter): Promise<UserEntity[]> => {
+export const getUsers = async (filters: userFilterInput): Promise<UserEntity[]> => {
     const query = userRepository()
         .createQueryBuilder('user')
         .orderBy('user.identifiant', 'ASC');

@@ -1,6 +1,10 @@
 import {Request, Response} from "express";
 import * as authService from "../services/auth.service";
-import * as userService from "../services/user.service";
+import {GetUserByIdUseCase} from "../context/user/app/usecases/get-user-id.usecase";
+import {typeUserRepository} from "../context/user/infra/persistances/repositories/user.type.repository";
+import {toUserPresenter} from "../context/user/api/presenters/user.presenter";
+
+const getUserByIdUseCase = new GetUserByIdUseCase(typeUserRepository);
 
 export const login = async (req: Request, res: Response) => {
     res.status(200).send(await authService.login(req.body));
@@ -21,5 +25,6 @@ export const logoutAll = async (req: Request, res: Response) => {
 }
 
 export const me = async (req: Request, res: Response) => {
-    res.status(200).send(await userService.getUserById(req.user.sub));
+    const user = await getUserByIdUseCase.execute(req.user.sub);
+    res.status(200).send(toUserPresenter(user));
 }

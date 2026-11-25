@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import {createHash} from "crypto";
-import * as userRepository from "../repositories/user.repository";
+import * as userRepository from "../context/user/infra/persistances/repositories/user.repository";
 import * as refreshTokenRepository from "../repositories/refresh-token.repository";
 import * as jwtService from "./jwt.service";
-import {userLoginDTO} from "../types/dtos/user.dtos";
+import {userLoginDTO} from "../types/dtos/auth.dtos";
 import {TokenPair} from "../types/auth.type";
 import {InvalidCredentialsError, RefreshTokenInvalidError, RefreshTokenReusedError} from "../core/http/errors/auth.errors";
 
