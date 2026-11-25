@@ -1,7 +1,7 @@
 import * as animeRepository from '../repositories/anime.repository';
 import AnimeFilter from '../types/animeFilter.type'
-import {animeToCreateInput} from "../types/inputs/anime.input";
-import {animePresenter, toAnimePresenter} from "../types/presenters/anime.presenter";
+import {animeToCreateInput} from "../context/anime/app/inputs/anime.input";
+import {animePresenter, toAnimePresenter} from "../context/anime/api/presenters/anime.presenter";
 import {AnimeNotFoundError, AnimeReferenceError} from "../core/http/errors/anime.errors";
 
 export const getAnimes = async (filters: AnimeFilter): Promise<animePresenter[]> => {

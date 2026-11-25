@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {plainToInstance} from "class-transformer";
-import * as animeService from "../services/anime.service";
-import {animeFilterDto, animeIdParamDto} from "../types/dtos/anime.dto";
+import * as animeService from "../../../../services/anime.service";
+import {animeFilterDto, animeIdParamDto} from "../dtos/anime.dto";
 
 export const getAnimes = async (req: Request, res: Response) => {
     const filters = plainToInstance(animeFilterDto, req.query);

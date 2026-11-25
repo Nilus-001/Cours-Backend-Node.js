@@ -1,4 +1,4 @@
-import {AnimeEntity} from "../../entities/anime.entity";
+import {AnimeEntity} from "../../../../entities/anime.entity";
 
 export class libellePresenter {
     id!: number;

@@ -1,7 +1,7 @@
 ﻿import { Router } from 'express';
 import * as animeController from "../controllers/anime.controller";
-import { ValidateDto } from '../middlewares/validate'
-import { animeToCreateDto, animeToUpdateDto, animeIdParamDto, animeFilterDto } from '../types/dtos/anime.dto';
+import { ValidateDto } from '../../../../middlewares/validate'
+import { animeToCreateDto, animeToUpdateDto, animeIdParamDto, animeFilterDto } from '../dtos/anime.dto';
 
 const router = Router()
 
