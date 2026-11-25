@@ -21,6 +21,6 @@ export class LoginUseCase {
             throw new InvalidCredentialsError();
         }
         await this.refreshTokenRepository.deleteExpiredRefreshTokens();
-        return generateTokens(this.refreshTokenRepository, this.tokenService, user.id, user.identifiant);
+        return generateTokens(this.refreshTokenRepository, this.tokenService, user.id, user.identifiant, user.perm);
     }
 }

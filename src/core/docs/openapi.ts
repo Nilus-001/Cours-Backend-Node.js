@@ -108,7 +108,16 @@ export const openapiSpec = {
                 properties: {
                     id: {type: "integer"},
                     identifiant: {type: "string"},
-                    email: {type: "string", format: "email", nullable: true}
+                    email: {type: "string", format: "email", nullable: true},
+                    perm: {type: "string", pattern: "^[0-9]+$", description: "Bitfield des permissions (BigInt en string)", example: "15"}
+                }
+            },
+            UserPerm: {
+                type: "object",
+                required: ["perm"],
+                additionalProperties: false,
+                properties: {
+                    perm: {type: "string", pattern: "^[0-9]+$", description: "Nouvelle valeur complète des permissions", example: "15"}
                 }
             },
             UserCreate: {
@@ -265,6 +274,22 @@ export const openapiSpec = {
                     403: error("Action sur un autre compte"),
                     404: error("Utilisateur introuvable"),
                     409: error("Identifiant déjà utilisé")
+                }
+            }
+        },
+        "/user/{id}/perm": {
+            patch: {
+                tags: ["Users"],
+                summary: "Modifier les permissions d'un utilisateur (admin)",
+                security: bearer,
+                parameters: [idParam],
+                requestBody: {required: true, content: json(ref("UserPerm"))},
+                responses: {
+                    200: {description: "Permissions modifiées", content: json(ref("User"))},
+                    400: error("Validation échouée ou permission inconnue"),
+                    401: error("Token manquant, expiré ou invalide"),
+                    403: error("Permission insuffisante"),
+                    404: error("Utilisateur introuvable")
                 }
             }
         },

@@ -4,10 +4,12 @@ export class userPresenter {
     id!: number;
     identifiant!: string;
     email!: string | null;
+    perm!: string;
 }
 
 export const toUserPresenter = (user: UserEntity): userPresenter => ({
     id: user.id,
     identifiant: user.identifiant,
     email: user.email ?? null,
+    perm: user.perm.toString(),
 });

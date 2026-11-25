@@ -2,6 +2,11 @@ import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Relation} from "typeo
 import {AvisEntity} from "../../../../../entities/avis.entity";
 import {VuOrAVoirEntity} from "../../../../../entities/vu-or-a-voir.entity";
 
+const bigintTransformer = {
+    to: (value?: bigint | null) => value?.toString(),
+    from: (value?: string | null) => (value == null ? 0n : BigInt(value)),
+};
+
 @Entity('user_')
 export class UserEntity {
     @PrimaryGeneratedColumn({name: 'id_user'})
@@ -15,6 +20,9 @@ export class UserEntity {
 
     @Column('varchar', {name: 'mot_de_passe', select: false})
     motDePasse!: string;
+
+    @Column('bigint', {unsigned: true, default: 0, transformer: bigintTransformer})
+    perm!: bigint;
 
     @OneToMany(() => AvisEntity, (avis) => avis.user)
     avis!: Relation<AvisEntity[]>;

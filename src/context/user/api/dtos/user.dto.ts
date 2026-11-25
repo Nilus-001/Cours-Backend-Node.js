@@ -52,3 +52,9 @@ export class userIdParamDTO {
     @Min(1)
     id!: number;
 }
+
+export class userPermDTO {
+    @IsString()
+    @Matches(/^[0-9]+$/, {message: "La permission doit être un entier positif"})
+    perm!: string;
+}

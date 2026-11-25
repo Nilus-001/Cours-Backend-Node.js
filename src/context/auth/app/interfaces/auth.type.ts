@@ -1,6 +1,7 @@
 export type AccessTokenPayload = {
     sub: number;
     identifiant: string;
+    perm: bigint;
 }
 
 export type RefreshTokenPayload = {

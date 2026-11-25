@@ -23,3 +23,9 @@ export class RouteNotFoundError extends DomainError {
         super(404, "Err-route-notfound-404", "Route introuvable", meta);
     }
 }
+
+export class PermissionDeniedError extends DomainError {
+    constructor(meta?: any) {
+        super(403, "Err-permission-denied-403", "Permission insuffisante", meta);
+    }
+}

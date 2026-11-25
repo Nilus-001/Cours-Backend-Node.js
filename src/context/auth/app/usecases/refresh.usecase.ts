@@ -25,6 +25,6 @@ export class RefreshUseCase {
         }
 
         await this.refreshTokenRepository.deleteRefreshTokenByHash(stored.tokenHash);
-        return generateTokens(this.refreshTokenRepository, this.tokenService, stored.user.id, stored.user.identifiant);
+        return generateTokens(this.refreshTokenRepository, this.tokenService, stored.user.id, stored.user.identifiant, stored.user.perm);
     }
 }

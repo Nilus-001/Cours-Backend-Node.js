@@ -7,5 +7,6 @@ export const typeUserRepository: IUserRepository = {
     getUserByIdentifiant: userRepository.getUserByIdentifiant,
     addUser: userRepository.addUser,
     updateUser: userRepository.updateUser,
+    updateUserPerm: userRepository.updateUserPerm,
     deleteUser: userRepository.deleteUser,
 };

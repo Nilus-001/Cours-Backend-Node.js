@@ -41,6 +41,7 @@ export const addUser = async (user: userToCreateInput): Promise<UserEntity> => {
         identifiant: user.identifiant,
         email: user.email ?? null,
         motDePasse: user.hashedPassword,
+        perm: user.perm,
     });
     const saved = await userRepository().save(created);
     return getUserById(saved.id);
@@ -55,6 +56,11 @@ export const updateUser = async (id: number, user: userToUpdateInput): Promise<U
     if (Object.keys(changes).length > 0) {
         await userRepository().update({id}, changes);
     }
+    return getUserById(id);
+}
+
+export const updateUserPerm = async (id: number, perm: bigint): Promise<UserEntity | null> => {
+    await userRepository().update({id}, {perm});
     return getUserById(id);
 }
 

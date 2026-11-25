@@ -8,5 +8,6 @@ export interface IUserRepository {
     getUserByIdentifiant(identifiant: string): Promise<UserEntity | null>;
     addUser(user: userToCreateInput): Promise<UserEntity>;
     updateUser(id: number, user: userToUpdateInput): Promise<UserEntity | null>;
+    updateUserPerm(id: number, perm: bigint): Promise<UserEntity | null>;
     deleteUser(id: number): Promise<void>;
 }

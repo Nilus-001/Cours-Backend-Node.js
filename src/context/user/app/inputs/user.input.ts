@@ -2,6 +2,7 @@ export class userToCreateInput {
     identifiant!: string;
     email?: string | null;
     hashedPassword!: string;
+    perm!: bigint;
 }
 
 export class userToUpdateInput {

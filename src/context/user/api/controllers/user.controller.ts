@@ -10,12 +10,14 @@ import {GetUserByIdUseCase} from "../../app/usecases/get-user-id.usecase";
 import {AddUserUseCase} from "../../app/usecases/add-user.usecase";
 import {UpdateUserUseCase} from "../../app/usecases/update-user.usecase";
 import {DeleteUserUseCase} from "../../app/usecases/delete-user.usecase";
+import {UpdateUserPermUseCase} from "../../app/usecases/update-user-perm.usecase";
 
 const getUsersUseCase = new GetUsersUseCase(typeUserRepository);
 const getUserByIdUseCase = new GetUserByIdUseCase(typeUserRepository);
 const addUserUseCase = new AddUserUseCase(typeUserRepository);
 const updateUserUseCase = new UpdateUserUseCase(typeUserRepository);
 const deleteUserUseCase = new DeleteUserUseCase(typeUserRepository);
+const updateUserPermUseCase = new UpdateUserPermUseCase(typeUserRepository);
 
 const getId = (req: Request) => plainToInstance(userIdParamDTO, req.params).id;
 
@@ -40,6 +42,11 @@ export const addUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     const user = await updateUserUseCase.execute(getId(req), req.body);
+    res.status(200).send(toUserPresenter(user));
+}
+
+export const updateUserPerm = async (req: Request, res: Response) => {
+    const user = await updateUserPermUseCase.execute(getId(req), BigInt(req.body.perm));
     res.status(200).send(toUserPresenter(user));
 }
 

@@ -1,6 +1,7 @@
 import {IUserRepository} from "../interfaces/user.repository.interface";
 import {UserEntity} from "../../infra/persistances/entities/user.entity";
-import {UserIdentifiantUsedError, UserNotFoundError} from "../../domain/errors/user.errors";
+import {UserIdentifiantUsedError, UserNotFoundError, UserPermInvalidError} from "../../domain/errors/user.errors";
+import {ALL_PERMS} from "../../../../core/http/perms/perm.list";
 
 export const SALT_ROUNDS = 10;
 
@@ -17,4 +18,10 @@ export const getExistingUser = async (userRepository: IUserRepository, id: numbe
         throw new UserNotFoundError({id});
     }
     return user;
+}
+
+export const ensurePermValide = (perm: bigint): void => {
+    if ((perm & ~ALL_PERMS) !== 0n) {
+        throw new UserPermInvalidError({perm: perm.toString()});
+    }
 }
