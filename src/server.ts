@@ -9,7 +9,7 @@ import animeRoutes from "./context/anime/api/routes/anime.routes";
 import {db} from "./core/configs/database/typeorm.config";
 import userRoutes from "./context/user/api/routes/user.routes";
 import authRoutes from "./context/auth/api/routes/auth.routes";
-import {errorMiddleware, notFoundMiddleware} from "./middlewares/api.middleware";
+import {errorMiddleware, notFoundMiddleware} from "./core/http/errors/middleware/api.middleware";
 import {registerListeners} from "./listeners";
 
 const PORT = 8080;

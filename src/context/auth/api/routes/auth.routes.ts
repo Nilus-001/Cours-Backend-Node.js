@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import * as authController from "../controllers/auth.controller";
-import {ValidateDto} from '../../../../middlewares/validate';
+import {ValidateDto} from '../../../../core/http/validations/validate';
 import {authenticate} from '../../infra/guards/auth.guard';
 import {refreshTokenDTO, userLoginDTO} from '../dtos/auth.dto';
 

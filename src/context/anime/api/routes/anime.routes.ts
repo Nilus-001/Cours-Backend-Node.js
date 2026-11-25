@@ -1,6 +1,6 @@
 ﻿import { Router } from 'express';
 import * as animeController from "../controllers/anime.controller";
-import { ValidateDto } from '../../../../middlewares/validate'
+import { ValidateDto } from '../../../../core/http/validations/validate'
 import { animeToCreateDto, animeToUpdateDto, animeIdParamDto } from '../dtos/anime.dto';
 import { animeFilterDto } from '../dtos/animeFilter.dto';
 

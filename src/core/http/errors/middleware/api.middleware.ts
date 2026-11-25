@@ -1,7 +1,7 @@
 ﻿import {Request, Response, NextFunction} from "express";
 import {ValidationError} from "class-validator";
-import {DomainError} from "../core/http/errorDomain";
-import {InvalidJsonError, RouteNotFoundError, UnknownError, ValidateError} from "../core/http/errors/common.errors";
+import {DomainError} from "../../errorDomain";
+import {InvalidJsonError, RouteNotFoundError, UnknownError, ValidateError} from "../common.errors";
 
 const isValidationErrors = (err: any): err is ValidationError[] =>
     Array.isArray(err) && err.length > 0 && err.every((e) => e instanceof ValidationError);

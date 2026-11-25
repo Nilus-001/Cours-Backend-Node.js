@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import * as userController from "../controllers/user.controller";
-import {ValidateDto} from '../../../../middlewares/validate';
+import {ValidateDto} from '../../../../core/http/validations/validate';
 import {authenticate, isSelf} from '../../../auth/infra/guards/auth.guard';
 import {userIdParamDTO, userToCreateDTO, userToUpdateDTO} from '../dtos/user.dto';
 import {userFilterDTO} from '../dtos/userFilter.dto';
