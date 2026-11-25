@@ -1,6 +1,6 @@
 ﻿import {IAnimeRepository} from "../interfaces/anime.repository.interface";
 import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
-import {AnimeNotFoundError} from "../../../../core/http/errors/anime.errors";
+import {AnimeNotFoundError} from "../../domain/errors/anime.errors";
 
 export class GetAnimeByIdUseCase {
     constructor(private readonly animeRepository: IAnimeRepository) {}

@@ -1,7 +1,7 @@
 ﻿import {IAnimeRepository} from "../interfaces/anime.repository.interface";
 import {animeToCreateInput} from "../inputs/anime.input";
 import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
-import {AnimeReferenceError} from "../../../../core/http/errors/anime.errors";
+import {AnimeReferenceError} from "../../domain/errors/anime.errors";
 
 export class AddAnimeUseCase {
     constructor(private readonly animeRepository: IAnimeRepository) {}
