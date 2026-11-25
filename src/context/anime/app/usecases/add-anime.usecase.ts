@@ -1,6 +1,6 @@
 ﻿import {IAnimeRepository} from "../interfaces/anime.repository.interface";
 import {animeToCreateInput} from "../inputs/anime.input";
-import {AnimeEntity} from "../../../../entities/anime.entity";
+import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
 import {AnimeReferenceError} from "../../../../core/http/errors/anime.errors";
 
 export class AddAnimeUseCase {

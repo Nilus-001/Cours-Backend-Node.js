@@ -1,5 +1,5 @@
 import {db} from "../../../../../core/configs/database/typeorm.config";
-import {AnimeEntity} from "../../../../../entities/anime.entity";
+import {AnimeEntity} from "../entities/anime.entity";
 import {animeToCreateInput} from "../../../app/inputs/anime.input";
 import {animeFilterInput} from "../../../app/inputs/animeFilter.input";
 

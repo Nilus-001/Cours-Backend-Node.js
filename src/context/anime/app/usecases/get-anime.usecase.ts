@@ -1,5 +1,5 @@
 ﻿import {IAnimeRepository} from "../interfaces/anime.repository.interface";
-import {AnimeEntity} from "../../../../entities/anime.entity";
+import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
 import {animeFilterInput} from "../inputs/animeFilter.input";
 
 export class GetAnimesUseCase {

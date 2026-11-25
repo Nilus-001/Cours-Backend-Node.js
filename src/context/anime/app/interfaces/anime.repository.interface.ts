@@ -1,4 +1,4 @@
-﻿import {AnimeEntity} from "../../../../entities/anime.entity";
+﻿import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
 import {animeToCreateInput} from "../inputs/anime.input";
 import {animeFilterInput} from "../inputs/animeFilter.input";
 

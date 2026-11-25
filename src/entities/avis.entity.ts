@@ -1,6 +1,6 @@
 import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation} from "typeorm";
 import {CategorieAppreciationEntity} from "./categorie-appreciation.entity";
-import {AnimeEntity} from "./anime.entity";
+import {AnimeEntity} from "../context/anime/infra/persistances/entities/anime.entity";
 import {UserEntity} from "./user.entity";
 
 @Entity('avis')
