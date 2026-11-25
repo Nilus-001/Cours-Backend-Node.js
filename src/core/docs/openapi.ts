@@ -330,10 +330,12 @@ export const openapiSpec = {
             post: {
                 tags: ["Animes"],
                 summary: "Créer un anime",
+                security: bearer,
                 requestBody: {required: true, content: json(ref("AnimeCreate"))},
                 responses: {
                     201: {description: "Anime créé", content: json(ref("Anime"))},
-                    400: error("Validation échouée ou référence inexistante")
+                    400: error("Validation échouée ou référence inexistante"),
+                    401: error("Token manquant, expiré ou invalide")
                 }
             }
         },
@@ -353,11 +355,13 @@ export const openapiSpec = {
             patch: {
                 tags: ["Animes"],
                 summary: "Modifier un anime (non implémenté)",
+                security: bearer,
                 parameters: [idParam],
                 requestBody: {required: true, content: json(ref("AnimeUpdate"))},
                 responses: {
                     200: {description: "Anime modifié", content: json(ref("Anime"))},
                     400: error("Validation échouée"),
+                    401: error("Token manquant, expiré ou invalide"),
                     404: error("Anime introuvable")
                 }
             }
@@ -366,10 +370,12 @@ export const openapiSpec = {
             delete: {
                 tags: ["Animes"],
                 summary: "Supprimer un anime (non implémenté)",
+                security: bearer,
                 parameters: [idParam],
                 responses: {
                     204: {description: "Anime supprimé"},
                     400: error("Validation échouée"),
+                    401: error("Token manquant, expiré ou invalide"),
                     404: error("Anime introuvable")
                 }
             }
