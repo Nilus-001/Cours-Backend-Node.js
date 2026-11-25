@@ -1,6 +1,6 @@
 import jwt, {SignOptions} from "jsonwebtoken";
 import {randomUUID} from "crypto";
-import {AccessTokenPayload, RefreshTokenPayload} from "../types/auth.type";
+import {AccessTokenPayload, RefreshTokenPayload} from "../../app/interfaces/auth.type";
 
 const getEnv = (key: string): string => {
     const value = process.env[key];

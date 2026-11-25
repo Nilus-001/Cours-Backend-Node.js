@@ -9,7 +9,7 @@ import {GenreEntity} from "../context/anime/infra/persistances/entities/genre.en
 import {LangueEntity} from "../context/anime/infra/persistances/entities/langue.entity";
 import {NoterEntity} from "../context/anime/infra/persistances/entities/noter.entity";
 import {ProducteurEntity} from "../context/anime/infra/persistances/entities/producteur.entity";
-import {RefreshTokenEntity} from "./refresh-token.entity";
+import {RefreshTokenEntity} from "../context/auth/infra/persistances/entities/refresh-token.entity";
 import {SaisonEntity} from "../context/anime/infra/persistances/entities/saison.entity";
 import {SourceEntity} from "../context/anime/infra/persistances/entities/source.entity";
 import {SourceOfficielEntity} from "../context/anime/infra/persistances/entities/source-officiel.entity";

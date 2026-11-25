@@ -1,8 +1,8 @@
 import {Router} from 'express';
 import * as authController from "../controllers/auth.controller";
-import {ValidateDto} from '../middlewares/validate';
-import {authenticate} from '../middlewares/auth';
-import {refreshTokenDTO, userLoginDTO} from '../types/dtos/auth.dtos';
+import {ValidateDto} from '../../../../middlewares/validate';
+import {authenticate} from '../../infra/guards/auth.guard';
+import {refreshTokenDTO, userLoginDTO} from '../dtos/auth.dto';
 
 const router = Router();
 

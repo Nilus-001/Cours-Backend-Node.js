@@ -8,7 +8,7 @@ import {openapiSpec} from "./core/docs/openapi";
 import animeRoutes from "./context/anime/api/routes/anime.routes";
 import {db} from "./core/configs/database/typeorm.config";
 import userRoutes from "./context/user/api/routes/user.routes";
-import authRoutes from "./routes/auth.routes";
+import authRoutes from "./context/auth/api/routes/auth.routes";
 import {errorMiddleware, notFoundMiddleware} from "./middlewares/api.middleware";
 import {registerListeners} from "./listeners";
 

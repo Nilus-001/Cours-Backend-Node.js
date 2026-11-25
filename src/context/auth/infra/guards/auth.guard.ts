@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
-import {verifyAccessToken} from "../services/jwt.service";
-import {AccountForbiddenError, TokenExpiredError, TokenInvalidError, TokenMissingError} from "../core/http/errors/auth.errors";
+import {verifyAccessToken} from "../security/jwt.service";
+import {AccountForbiddenError, TokenExpiredError, TokenInvalidError, TokenMissingError} from "../../domain/errors/auth.errors";
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
     const header = req.headers.authorization;
