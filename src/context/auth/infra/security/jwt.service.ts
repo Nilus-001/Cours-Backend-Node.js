@@ -1,12 +1,8 @@
 import jwt, {SignOptions} from "jsonwebtoken";
 import {randomUUID} from "crypto";
 import {AccessTokenPayload, RefreshTokenPayload} from "../../app/interfaces/auth.type";
+import getEnv from "../../../../core/utils/getEnv.utils";
 
-const getEnv = (key: string): string => {
-    const value = process.env[key];
-    if (!value) throw new Error(`Variable d'environnement manquante : ${key}`);
-    return value;
-}
 
 const ACCESS_SECRET = getEnv('JWT_ACCESS_SECRET');
 const REFRESH_SECRET = getEnv('JWT_REFRESH_SECRET');
