@@ -17,7 +17,11 @@ const PORT = getEnv('APP_PORT');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: getEnv('CORS_ORIGINS').split(',').map(o => o.trim()),
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 
 app.get('/api-docs.json', (req, res) => {
