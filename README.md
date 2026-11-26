@@ -49,10 +49,19 @@ APP_PORT=3000
    - **Import du script SQL** : `synchronize` est désactivé par défaut, donc TypeORM ne crée pas les tables. Importer le schéma :
 
      ```
-     mysql -u <user> -p <DB_DATABASE> < sql/schema.sql
+     mysql -u <user> -p <DB_DATABASE> < src/core/database/schema.sql
      ```
 
    - **Génération automatique** : passer `synchronize: true` dans `src/core/configs/database/typeorm.config.ts`. TypeORM crée alors les tables au démarrage de l'API. À utiliser uniquement en développement.
+
+3. (Optionnel) Remplir la base avec des données de démo (vide toutes les tables) :
+
+   ```
+   mysql -u <user> -p <DB_DATABASE> < src/core/database/seeders/01_catalogue.seed.sql
+   mysql -u <user> -p <DB_DATABASE> < src/core/database/seeders/02_users.seed.sql
+   ```
+
+   Comptes : `admin`, `nils`, `sakura` — mot de passe `password123`
 
 ### Mailer
 
