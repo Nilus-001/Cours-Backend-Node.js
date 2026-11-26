@@ -8,6 +8,10 @@ const idParam = {
 const json = (schema: object) => ({"application/json": {schema}});
 const ref = (name: string) => ({$ref: `#/components/schemas/${name}`});
 const error = (description: string) => ({description, content: json(ref("Error"))});
+const success = (description: string, data: object, meta?: object) => ({
+    description,
+    content: json({type: "object", properties: meta ? {data, meta} : {data}})
+});
 const bearer = [{bearerAuth: []}];
 
 const idArray = {type: "array", uniqueItems: true, items: {type: "integer", minimum: 1}};
@@ -183,7 +187,7 @@ export const openapiSpec = {
                 summary: "Connexion",
                 requestBody: {required: true, content: json(ref("Login"))},
                 responses: {
-                    200: {description: "Tokens", content: json(ref("TokenPair"))},
+                    200: success("Tokens", ref("TokenPair")),
                     400: error("Validation échouée"),
                     401: error("Identifiant ou mot de passe incorrect")
                 }
@@ -195,7 +199,7 @@ export const openapiSpec = {
                 summary: "Renouveler les tokens",
                 requestBody: {required: true, content: json(ref("RefreshToken"))},
                 responses: {
-                    200: {description: "Nouveaux tokens", content: json(ref("TokenPair"))},
+                    200: success("Nouveaux tokens", ref("TokenPair")),
                     400: error("Validation échouée"),
                     401: error("Refresh token invalide, expiré ou réutilisé")
                 }
@@ -231,7 +235,7 @@ export const openapiSpec = {
                 summary: "Utilisateur connecté",
                 security: bearer,
                 responses: {
-                    200: {description: "Utilisateur", content: json(ref("User"))},
+                    200: success("Utilisateur", ref("User")),
                     401: error("Token manquant, expiré, invalide ou révoqué")
                 }
             }
@@ -244,7 +248,7 @@ export const openapiSpec = {
                     {name: "identifiant", in: "query", schema: {type: "string"}}
                 ],
                 responses: {
-                    200: {description: "Utilisateurs", content: json({type: "array", items: ref("UserPublic")})},
+                    200: success("Utilisateurs", {type: "array", items: ref("UserPublic")}, {type: "object", properties: {total: {type: "integer"}}}),
                     400: error("Validation échouée")
                 }
             }
@@ -255,7 +259,7 @@ export const openapiSpec = {
                 summary: "Créer un utilisateur",
                 requestBody: {required: true, content: json(ref("UserCreate"))},
                 responses: {
-                    201: {description: "Utilisateur créé", content: json(ref("User"))},
+                    201: success("Utilisateur créé", ref("User")),
                     400: error("Validation échouée"),
                     409: error("Identifiant déjà utilisé")
                 }
@@ -267,7 +271,7 @@ export const openapiSpec = {
                 summary: "Récupérer un utilisateur",
                 parameters: [idParam],
                 responses: {
-                    200: {description: "Utilisateur", content: json(ref("UserPublic"))},
+                    200: success("Utilisateur", ref("UserPublic")),
                     400: error("Validation échouée"),
                     404: error("Utilisateur introuvable")
                 }
@@ -281,7 +285,7 @@ export const openapiSpec = {
                 parameters: [idParam],
                 requestBody: {required: true, content: json(ref("UserUpdate"))},
                 responses: {
-                    200: {description: "Utilisateur modifié", content: json(ref("User"))},
+                    200: success("Utilisateur modifié", ref("User")),
                     400: error("Validation échouée"),
                     401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Action sur un autre compte sans MANAGE_USERS"),
@@ -298,7 +302,7 @@ export const openapiSpec = {
                 parameters: [idParam],
                 requestBody: {required: true, content: json(ref("UserPerm"))},
                 responses: {
-                    200: {description: "Permissions modifiées", content: json(ref("User"))},
+                    200: success("Permissions modifiées", ref("User")),
                     400: error("Validation échouée ou permission inconnue"),
                     401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission insuffisante"),
@@ -334,7 +338,7 @@ export const openapiSpec = {
                     {name: "idTheme", in: "query", schema: {type: "integer", minimum: 1}}
                 ],
                 responses: {
-                    200: {description: "Animes", content: json({type: "array", items: ref("Anime")})},
+                    200: success("Animes", {type: "array", items: ref("Anime")}, {type: "object", properties: {filtres: {type: "object"}, total: {type: "integer"}}}),
                     400: error("Validation échouée")
                 }
             }
@@ -346,7 +350,7 @@ export const openapiSpec = {
                 security: bearer,
                 requestBody: {required: true, content: json(ref("AnimeCreate"))},
                 responses: {
-                    201: {description: "Anime créé", content: json(ref("Anime"))},
+                    201: success("Anime créé", ref("Anime")),
                     400: error("Validation échouée ou référence inexistante"),
                     401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission CREATE_ANIME requise")
@@ -359,7 +363,7 @@ export const openapiSpec = {
                 summary: "Récupérer un anime",
                 parameters: [idParam],
                 responses: {
-                    200: {description: "Anime", content: json(ref("Anime"))},
+                    200: success("Anime", ref("Anime")),
                     400: error("Validation échouée"),
                     404: error("Anime introuvable")
                 }
@@ -373,7 +377,7 @@ export const openapiSpec = {
                 parameters: [idParam],
                 requestBody: {required: true, content: json(ref("AnimeUpdate"))},
                 responses: {
-                    200: {description: "Anime modifié", content: json(ref("Anime"))},
+                    200: success("Anime modifié", ref("Anime")),
                     400: error("Validation échouée ou référence inexistante"),
                     401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission EDIT_ANIME requise"),

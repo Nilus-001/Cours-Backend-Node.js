@@ -1,4 +1,5 @@
 import {Request, Response} from "express";
+import {DomainResponse} from "../../../../core/http/successDomain";
 import {plainToInstance} from "class-transformer";
 import {AnimeIdParamDto} from "../dtos/anime.dto";
 import {AnimeFilterDto} from "../dtos/animeFilter.dto";
@@ -29,13 +30,13 @@ export const getAnimes = async (req: Request, res: Response) => {
 
 export const addAnime = async (req: Request, res: Response) => {
     const anime = await addAnimeUseCase.execute(req.body);
-    res.status(201).send(toAnimePresenter(anime));
+    res.status(201).send(new DomainResponse(toAnimePresenter(anime)));
 }
 
 export const updateAnime = async (req: Request, res: Response) => {
     const {id} = plainToInstance(AnimeIdParamDto, req.params);
     const anime = await updateAnimeUseCase.execute(id, req.body);
-    res.status(200).send(toAnimePresenter(anime));
+    res.status(200).send(new DomainResponse(toAnimePresenter(anime)));
 }
 
 export const deleteAnime = async (req: Request, res: Response) => {
@@ -49,5 +50,5 @@ export const getAnimeById = async (req: Request, res: Response) => {
 
     const anime = await getAnimeByIdUseCase.execute(id);
 
-    res.status(200).send(toAnimePresenter(anime));
+    res.status(200).send(new DomainResponse(toAnimePresenter(anime)));
 }

@@ -1,9 +1,6 @@
-export class DomainResponse<T> {
+export class DomainResponse<T, M = Record<string, unknown>> {
     constructor(
-        public readonly date: T,
-        public readonly meta? : T
-    )
-    {
-
-    }
+        public readonly data: T,
+        public readonly meta?: M,
+    ) {}
 }

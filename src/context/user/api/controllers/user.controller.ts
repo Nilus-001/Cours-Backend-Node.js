@@ -1,4 +1,5 @@
 import {Request, Response} from "express";
+import {DomainResponse} from "../../../../core/http/successDomain";
 import {plainToInstance} from "class-transformer";
 import {UserIdParamDto} from "../dtos/user.dto";
 import {UserFilterDto} from "../dtos/userFilter.dto";
@@ -27,27 +28,27 @@ export const getUsers = async (req: Request, res: Response) => {
 
     const users = await getUsersUseCase.execute(filters);
 
-    res.status(200).send(users.map(toUserPublicPresenter));
+    res.status(200).send(new DomainResponse(users.map(toUserPublicPresenter), {total: users.length}));
 }
 
 export const getUserById = async (req: Request, res: Response) => {
     const user = await getUserByIdUseCase.execute(getId(req));
-    res.status(200).send(toUserPublicPresenter(user));
+    res.status(200).send(new DomainResponse(toUserPublicPresenter(user)));
 }
 
 export const addUser = async (req: Request, res: Response) => {
     const user = await addUserUseCase.execute(req.body);
-    res.status(201).send(toUserPresenter(user));
+    res.status(201).send(new DomainResponse(toUserPresenter(user)));
 }
 
 export const updateUser = async (req: Request, res: Response) => {
     const user = await updateUserUseCase.execute(getId(req), req.body);
-    res.status(200).send(toUserPresenter(user));
+    res.status(200).send(new DomainResponse(toUserPresenter(user)));
 }
 
 export const updateUserPerm = async (req: Request, res: Response) => {
     const user = await updateUserPermUseCase.execute(getId(req), BigInt(req.body.perm));
-    res.status(200).send(toUserPresenter(user));
+    res.status(200).send(new DomainResponse(toUserPresenter(user)));
 }
 
 export const deleteUser = async (req: Request, res: Response) => {

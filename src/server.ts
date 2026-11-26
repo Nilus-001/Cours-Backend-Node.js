@@ -11,6 +11,7 @@ import {errorMiddleware, notFoundMiddleware} from "./core/http/errors/middleware
 import {registerListeners} from "./core/events/listeners";
 import {verifyMailer} from "./core/mailer/nodemailer.mailer";
 import getEnv from "./core/utils/getEnv.utils";
+import {DomainResponse} from "./core/http/successDomain";
 
 const PORT = getEnv('APP_PORT');
 
@@ -29,7 +30,7 @@ app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
-    res.json({ message: 'API OK' });
+    res.json(new DomainResponse({message: 'API OK'}));
 });
 
 app.use(notFoundMiddleware);
