@@ -1,7 +1,5 @@
-﻿// @ts-ignore
-import express from 'express';
+﻿import express from 'express';
 import 'reflect-metadata';
-// @ts-ignore
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import {openapiSpec} from "./core/docs/openapi";
@@ -12,8 +10,9 @@ import authRoutes from "./context/auth/api/routes/auth.routes";
 import {errorMiddleware, notFoundMiddleware} from "./core/http/errors/middleware/api.middleware";
 import {registerListeners} from "./core/events/listeners";
 import {verifyMailer} from "./core/mailer/nodemailer.mailer";
+import getEnv from "./core/utils/getEnv.utils";
 
-const PORT = 8080;
+const PORT = getEnv('APP_PORT');
 
 const app = express();
 

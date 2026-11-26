@@ -15,7 +15,7 @@ const idArray = {type: "array", uniqueItems: true, items: {type: "integer", mini
 export const openapiSpec = {
     openapi: "3.0.3",
     info: {
-        title: "AnimeHere API",
+        title: "Anime API",
         version: "1.0.0"
     },
     servers: [{url: "http://localhost:8080"}],
