@@ -25,13 +25,6 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     next();
 }
 
-export const isSelf = (req: Request, res: Response, next: NextFunction) => {
-    if (Number(req.params.id) !== req.user?.sub) {
-        throw new AccountForbiddenError({id: Number(req.params.id)});
-    }
-    next();
-}
-
 export const isSelfOrPermission = (permission: bigint) => (req: Request, res: Response, next: NextFunction) => {
     const perms = req.user?.perm ?? 0n;
     const self = Number(req.params.id) === req.user?.sub;
