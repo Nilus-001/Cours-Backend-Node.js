@@ -1,6 +1,6 @@
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, Relation} from "typeorm";
-import {AnimeEntity} from "../context/anime/infra/persistances/entities/anime.entity";
-import {UserEntity} from "../context/user/infra/persistances/entities/user.entity";
+import {AnimeEntity} from "../../../../anime/infra/persistances/entities/anime.entity";
+import {UserEntity} from "../../../../user/infra/persistances/entities/user.entity";
 
 @Entity('vu_or_a_voir')
 export class VuOrAVoirEntity {

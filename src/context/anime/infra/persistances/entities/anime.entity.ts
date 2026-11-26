@@ -6,7 +6,7 @@ import {ProducteurEntity} from "./producteur.entity";
 import {GenreEntity} from "./genre.entity";
 import {EpisodeEntity} from "./episode.entity";
 import {AvisEntity} from "../../../../../entities/avis.entity";
-import {VuOrAVoirEntity} from "../../../../../entities/vu-or-a-voir.entity";
+import {VuOrAVoirEntity} from "../../../../watchlist/infra/persistances/entities/vu-or-a-voir.entity";
 import {NoterEntity} from "./noter.entity";
 
 @Entity('anime')

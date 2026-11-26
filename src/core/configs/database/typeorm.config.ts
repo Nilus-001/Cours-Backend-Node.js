@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import {DataSource} from "typeorm";
 import mysql from "mysql2";
-import {entities} from "../../../entities";
+import {entities} from "../../database/entities";
 import getEnv from "../../utils/getEnv.utils";
 
 const DB_HOST = getEnv('DB_HOST');

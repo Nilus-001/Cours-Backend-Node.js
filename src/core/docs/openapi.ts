@@ -16,6 +16,20 @@ const bearer = [{bearerAuth: []}];
 
 const idArray = {type: "array", uniqueItems: true, items: {type: "integer", minimum: 1}};
 
+const suiviListMeta = {
+    type: "object",
+    properties: {
+        filtres: {
+            type: "object",
+            properties: {
+                statut: {type: "string", nullable: true},
+                favori: {type: "boolean", nullable: true}
+            }
+        },
+        total: {type: "integer"}
+    }
+};
+
 export const openapiSpec = {
     openapi: "3.0.3",
     info: {
@@ -26,7 +40,8 @@ export const openapiSpec = {
     tags: [
         {name: "Auth"},
         {name: "Users"},
-        {name: "Animes"}
+        {name: "Animes"},
+        {name: "Watchlist"}
     ],
     components: {
         securitySchemes: {
@@ -176,6 +191,39 @@ export const openapiSpec = {
                 properties: {
                     accessToken: {type: "string"},
                     refreshToken: {type: "string"}
+                }
+            },
+            Suivi: {
+                type: "object",
+                properties: {
+                    anime: {
+                        type: "object",
+                        properties: {
+                            id: {type: "integer"},
+                            nom: {type: "string"},
+                            image: {type: "string", nullable: true}
+                        }
+                    },
+                    statut: {type: "string", enum: ["a_voir", "en_cours", "vu"], nullable: true},
+                    episodeActuel: {type: "integer", nullable: true},
+                    dateVisionnage: {type: "string", format: "date", nullable: true},
+                    ordre: {type: "integer", nullable: true},
+                    favori: {type: "boolean"},
+                    classementFavori: {type: "integer", nullable: true}
+                }
+            },
+            Progress: {
+                type: "object",
+                properties: {
+                    episode: {type: "integer", minimum: 0, nullable: true},
+                    termine: {type: "boolean"}
+                }
+            },
+            SuiviOrdre: {
+                type: "object",
+                required: ["idAnimes"],
+                properties: {
+                    idAnimes: idArray
                 }
             }
         }
@@ -398,6 +446,155 @@ export const openapiSpec = {
                     403: error("Permission DELETE_ANIME requise"),
                     404: error("Anime introuvable"),
                     409: error("L'anime possède des épisodes")
+                }
+            }
+        },
+        "/user/me/watchlist": {
+            get: {
+                tags: ["Watchlist"],
+                summary: "Lister les animes suivis",
+                security: bearer,
+                parameters: [
+                    {name: "statut", in: "query", schema: {type: "string", enum: ["a_voir", "en_cours", "vu"]}},
+                    {name: "favori", in: "query", schema: {type: "boolean"}}
+                ],
+                responses: {
+                    200: success("Suivis", {type: "array", items: ref("Suivi")}, suiviListMeta),
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué")
+                }
+            }
+        },
+        "/user/me/watchlist/order": {
+            patch: {
+                tags: ["Watchlist"],
+                summary: "Réordonner les animes à voir",
+                security: bearer,
+                requestBody: {required: true, content: json(ref("SuiviOrdre"))},
+                responses: {
+                    200: success("Animes à voir réordonnés", {type: "array", items: ref("Suivi")}, suiviListMeta),
+                    400: error("Validation échouée ou liste incomplète"),
+                    401: error("Token manquant, expiré, invalide ou révoqué")
+                }
+            }
+        },
+        "/user/me/favorites": {
+            get: {
+                tags: ["Watchlist"],
+                summary: "Lister les favoris par classement",
+                security: bearer,
+                responses: {
+                    200: success("Favoris", {type: "array", items: ref("Suivi")}, suiviListMeta),
+                    401: error("Token manquant, expiré, invalide ou révoqué")
+                }
+            }
+        },
+        "/user/me/favorites/order": {
+            patch: {
+                tags: ["Watchlist"],
+                summary: "Réordonner les favoris",
+                security: bearer,
+                requestBody: {required: true, content: json(ref("SuiviOrdre"))},
+                responses: {
+                    200: success("Favoris réordonnés", {type: "array", items: ref("Suivi")}, suiviListMeta),
+                    400: error("Validation échouée ou liste incomplète"),
+                    401: error("Token manquant, expiré, invalide ou révoqué")
+                }
+            }
+        },
+        "/anime/{id}/tracking": {
+            get: {
+                tags: ["Watchlist"],
+                summary: "Suivi de l'anime pour l'utilisateur connecté",
+                security: bearer,
+                parameters: [idParam],
+                responses: {
+                    200: success("Suivi", ref("Suivi")),
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime non suivi")
+                }
+            },
+            delete: {
+                tags: ["Watchlist"],
+                summary: "Supprimer tout le suivi de l'anime",
+                security: bearer,
+                parameters: [idParam],
+                responses: {
+                    204: {description: "Suivi supprimé"},
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime non suivi")
+                }
+            }
+        },
+        "/anime/{id}/watchlist": {
+            post: {
+                tags: ["Watchlist"],
+                summary: "Ajouter l'anime à la watchlist",
+                security: bearer,
+                parameters: [idParam],
+                responses: {
+                    201: success("Suivi", ref("Suivi")),
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime introuvable"),
+                    409: error("Déjà dans la watchlist, commencé ou vu")
+                }
+            },
+            delete: {
+                tags: ["Watchlist"],
+                summary: "Retirer l'anime de la watchlist",
+                security: bearer,
+                parameters: [idParam],
+                responses: {
+                    204: {description: "Retiré de la watchlist"},
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime absent de la watchlist")
+                }
+            }
+        },
+        "/anime/{id}/progress": {
+            patch: {
+                tags: ["Watchlist"],
+                summary: "Mettre à jour la progression (épisode actuel, terminé)",
+                security: bearer,
+                parameters: [idParam],
+                requestBody: {required: true, content: json(ref("Progress"))},
+                responses: {
+                    200: success("Suivi", ref("Suivi")),
+                    204: {description: "Suivi vidé et supprimé"},
+                    400: error("Validation échouée, corps vide ou épisode hors limite"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime introuvable")
+                }
+            }
+        },
+        "/anime/{id}/favorite": {
+            post: {
+                tags: ["Watchlist"],
+                summary: "Ajouter l'anime aux favoris",
+                security: bearer,
+                parameters: [idParam],
+                responses: {
+                    201: success("Suivi", ref("Suivi")),
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime introuvable"),
+                    409: error("Déjà en favori")
+                }
+            },
+            delete: {
+                tags: ["Watchlist"],
+                summary: "Retirer l'anime des favoris",
+                security: bearer,
+                parameters: [idParam],
+                responses: {
+                    204: {description: "Retiré des favoris"},
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime absent des favoris")
                 }
             }
         }

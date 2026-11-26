@@ -7,6 +7,7 @@ import animeRoutes from "./context/anime/api/routes/anime.routes";
 import {db} from "./core/configs/database/typeorm.config";
 import userRoutes from "./context/user/api/routes/user.routes";
 import authRoutes from "./context/auth/api/routes/auth.routes";
+import {animeSuiviRoutes, userSuiviRoutes} from "./context/watchlist/api/routes/suivi.routes";
 import {errorMiddleware, notFoundMiddleware} from "./core/http/errors/middleware/api.middleware";
 import {registerListeners} from "./core/events/listeners";
 import {verifyMailer} from "./core/mailer/nodemailer.mailer";
@@ -29,7 +30,9 @@ app.get('/api-docs.json', (req, res) => {
 });
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
+app.use('/anime', animeSuiviRoutes);
 app.use('/anime', animeRoutes);
+app.use('/user/me', userSuiviRoutes);
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
 
