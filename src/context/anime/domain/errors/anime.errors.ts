@@ -11,3 +11,9 @@ export class AnimeNotFoundError extends DomainError {
         super(404, "Err-anime-notfound-404", "Anime introuvable", meta);
     }
 }
+
+export class AnimeDependenciesError extends DomainError {
+    constructor(meta?: any) {
+        super(409, "Err-anime-dependencies-409", "Impossible de supprimer : l'anime possède des épisodes", meta);
+    }
+}

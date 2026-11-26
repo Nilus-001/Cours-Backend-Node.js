@@ -368,13 +368,13 @@ export const openapiSpec = {
         "/anime/{id}/update": {
             patch: {
                 tags: ["Animes"],
-                summary: "Modifier un anime (non implémenté)",
+                summary: "Modifier un anime",
                 security: bearer,
                 parameters: [idParam],
                 requestBody: {required: true, content: json(ref("AnimeUpdate"))},
                 responses: {
                     200: {description: "Anime modifié", content: json(ref("Anime"))},
-                    400: error("Validation échouée"),
+                    400: error("Validation échouée ou référence inexistante"),
                     401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission EDIT_ANIME requise"),
                     404: error("Anime introuvable")
@@ -384,7 +384,7 @@ export const openapiSpec = {
         "/anime/{id}/delete": {
             delete: {
                 tags: ["Animes"],
-                summary: "Supprimer un anime (non implémenté)",
+                summary: "Supprimer un anime",
                 security: bearer,
                 parameters: [idParam],
                 responses: {
@@ -392,7 +392,8 @@ export const openapiSpec = {
                     400: error("Validation échouée"),
                     401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission DELETE_ANIME requise"),
-                    404: error("Anime introuvable")
+                    404: error("Anime introuvable"),
+                    409: error("L'anime possède des épisodes")
                 }
             }
         }

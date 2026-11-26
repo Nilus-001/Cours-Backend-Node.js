@@ -1,6 +1,7 @@
+import {DeepPartial} from "typeorm";
 import {db} from "../../../../../core/configs/database/typeorm.config";
 import {AnimeEntity} from "../entities/anime.entity";
-import {AnimeToCreateInput} from "../../../app/inputs/anime.input";
+import {AnimeToCreateInput, AnimeToUpdateInput} from "../../../app/inputs/anime.input";
 import {AnimeFilterInput} from "../../../app/inputs/animeFilter.input";
 
 const animeRepository = () => db.getRepository(AnimeEntity);
@@ -58,4 +59,33 @@ export const addAnime = async (anime: AnimeToCreateInput): Promise<AnimeEntity> 
     });
     const saved = await animeRepository().save(created);
     return getAnimeById(saved.id);
+}
+
+export const updateAnime = async (id: number, anime: AnimeToUpdateInput): Promise<AnimeEntity | null> => {
+    const changes: DeepPartial<AnimeEntity> = {id};
+    if (anime.nom !== undefined) changes.nom = anime.nom;
+    if (anime.synopsis !== undefined) changes.synopsis = anime.synopsis;
+    if (anime.image !== undefined) changes.image = anime.image;
+    if (anime.dateAnnonce !== undefined) changes.dateAnnonce = anime.dateAnnonce;
+    if (anime.idCategorie !== undefined) changes.categorie = anime.idCategorie ? {id: anime.idCategorie} : null;
+    if (anime.idGenres !== undefined) changes.genres = toRefs(anime.idGenres);
+    if (anime.idThemes !== undefined) changes.themes = toRefs(anime.idThemes);
+    if (anime.idProducteurs !== undefined) changes.producteurs = toRefs(anime.idProducteurs);
+    if (anime.idSources !== undefined) changes.sources = toRefs(anime.idSources);
+
+    if (Object.keys(changes).length > 1) {
+        await animeRepository().save(changes);
+    }
+    return getAnimeById(id);
+}
+
+const JOIN_TABLES = ['est_attribuee', 'posseder', 'organiser', 'est_source'];
+
+export const deleteAnime = async (id: number): Promise<void> => {
+    await db.transaction(async (manager) => {
+        for (const table of JOIN_TABLES) {
+            await manager.createQueryBuilder().delete().from(table).where('id_anime = :id', {id}).execute();
+        }
+        await manager.getRepository(AnimeEntity).delete({id});
+    });
 }

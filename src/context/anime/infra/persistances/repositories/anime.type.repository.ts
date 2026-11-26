@@ -5,4 +5,6 @@ export const typeAnimeRepository: IAnimeRepository = {
     getAnimes: animeRepository.getAnimes,
     getAnimeById: animeRepository.getAnimeById,
     addAnime: animeRepository.addAnime,
-};
+    updateAnime: animeRepository.updateAnime,
+    deleteAnime: animeRepository.deleteAnime,
+};

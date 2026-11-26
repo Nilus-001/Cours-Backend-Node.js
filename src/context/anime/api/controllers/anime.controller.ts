@@ -9,10 +9,14 @@ import {toAnimeListPresenter} from "../presenters/animeList.presenter";
 import {toAnimePresenter} from "../presenters/anime.presenter";
 import {GetAnimeByIdUseCase} from "../../app/usecases/get-anime-id.usecase";
 import {AddAnimeUseCase} from "../../app/usecases/add-anime.usecase";
+import {UpdateAnimeUseCase} from "../../app/usecases/update-anime.usecase";
+import {DeleteAnimeUseCase} from "../../app/usecases/delete-anime.usecase";
 
 const getAnimesUseCase = new GetAnimesUseCase(typeAnimeRepository);
 const getAnimeByIdUseCase = new GetAnimeByIdUseCase(typeAnimeRepository);
 const addAnimeUseCase = new AddAnimeUseCase(typeAnimeRepository);
+const updateAnimeUseCase = new UpdateAnimeUseCase(typeAnimeRepository);
+const deleteAnimeUseCase = new DeleteAnimeUseCase(typeAnimeRepository);
 
 export const getAnimes = async (req: Request, res: Response) => {
     const {nom, dateAnnonce, idCategorie, idGenre, idTheme} = plainToInstance(AnimeFilterDto, req.query);
@@ -28,12 +32,18 @@ export const addAnime = async (req: Request, res: Response) => {
     res.status(201).send(toAnimePresenter(anime));
 }
 
-export const deleteAnime = (req , res) => {
-    const data = req.body;
+export const updateAnime = async (req: Request, res: Response) => {
+    const {id} = plainToInstance(AnimeIdParamDto, req.params);
+    const anime = await updateAnimeUseCase.execute(id, req.body);
+    res.status(200).send(toAnimePresenter(anime));
 }
-export const updateAnime = (req , res) => {
-    const data = req.body;
+
+export const deleteAnime = async (req: Request, res: Response) => {
+    const {id} = plainToInstance(AnimeIdParamDto, req.params);
+    await deleteAnimeUseCase.execute(id);
+    res.status(204).send();
 }
+
 export const getAnimeById = async (req: Request, res: Response) => {
     const {id} = plainToInstance(AnimeIdParamDto, req.params);
 
