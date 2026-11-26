@@ -1,5 +1,15 @@
 import {UserEntity} from "../../infra/persistances/entities/user.entity";
 
+export class userPublicPresenter {
+    id!: number;
+    identifiant!: string;
+}
+
+export const toUserPublicPresenter = (user: UserEntity): userPublicPresenter => ({
+    id: user.id,
+    identifiant: user.identifiant,
+});
+
 export class userPresenter {
     id!: number;
     identifiant!: string;

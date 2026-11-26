@@ -4,7 +4,7 @@ import {userIdParamDTO} from "../dtos/user.dto";
 import {userFilterDTO} from "../dtos/userFilter.dto";
 import {userFilterInput} from "../../app/inputs/userFilter.input";
 import {typeUserRepository} from "../../infra/persistances/repositories/user.type.repository";
-import {toUserPresenter} from "../presenters/user.presenter";
+import {toUserPresenter, toUserPublicPresenter} from "../presenters/user.presenter";
 import {GetUsersUseCase} from "../../app/usecases/get-user.usecase";
 import {GetUserByIdUseCase} from "../../app/usecases/get-user-id.usecase";
 import {AddUserUseCase} from "../../app/usecases/add-user.usecase";
@@ -27,12 +27,12 @@ export const getUsers = async (req: Request, res: Response) => {
 
     const users = await getUsersUseCase.execute(filters);
 
-    res.status(200).send(users.map(toUserPresenter));
+    res.status(200).send(users.map(toUserPublicPresenter));
 }
 
 export const getUserById = async (req: Request, res: Response) => {
     const user = await getUserByIdUseCase.execute(getId(req));
-    res.status(200).send(toUserPresenter(user));
+    res.status(200).send(toUserPublicPresenter(user));
 }
 
 export const addUser = async (req: Request, res: Response) => {

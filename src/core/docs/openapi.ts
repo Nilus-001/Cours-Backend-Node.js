@@ -112,6 +112,13 @@ export const openapiSpec = {
                     perm: {type: "string", pattern: "^[0-9]+$", description: "Bitfield des permissions (BigInt en string)", example: "15"}
                 }
             },
+            UserPublic: {
+                type: "object",
+                properties: {
+                    id: {type: "integer"},
+                    identifiant: {type: "string"}
+                }
+            },
             UserPerm: {
                 type: "object",
                 required: ["perm"],
@@ -231,7 +238,7 @@ export const openapiSpec = {
                     {name: "identifiant", in: "query", schema: {type: "string"}}
                 ],
                 responses: {
-                    200: {description: "Utilisateurs", content: json({type: "array", items: ref("User")})},
+                    200: {description: "Utilisateurs", content: json({type: "array", items: ref("UserPublic")})},
                     400: error("Validation échouée")
                 }
             }
@@ -254,7 +261,7 @@ export const openapiSpec = {
                 summary: "Récupérer un utilisateur",
                 parameters: [idParam],
                 responses: {
-                    200: {description: "Utilisateur", content: json(ref("User"))},
+                    200: {description: "Utilisateur", content: json(ref("UserPublic"))},
                     400: error("Validation échouée"),
                     404: error("Utilisateur introuvable")
                 }
