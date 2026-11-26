@@ -1,7 +1,7 @@
 import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation} from "typeorm";
 import {CategorieAppreciationEntity} from "./categorie-appreciation.entity";
-import {AnimeEntity} from "../context/anime/infra/persistances/entities/anime.entity";
-import {UserEntity} from "../context/user/infra/persistances/entities/user.entity";
+import {AnimeEntity} from "../../../../anime/infra/persistances/entities/anime.entity";
+import {UserEntity} from "../../../../user/infra/persistances/entities/user.entity";
 
 @Entity('avis')
 export class AvisEntity {
@@ -15,7 +15,19 @@ export class AvisEntity {
     noteUser!: number | null;
 
     @Column('date', {name: 'date_avis', nullable: true})
-    dateAvis!: Date | null;
+    dateAvis!: Date | string | null;
+
+    @Column('int', {name: 'id_avis_1', nullable: true})
+    idAvisParent!: number | null;
+
+    @Column('int', {name: 'id_categ_user', nullable: true})
+    idCategorie!: number | null;
+
+    @Column('int', {name: 'id_anime'})
+    idAnime!: number;
+
+    @Column('int', {name: 'id_user'})
+    idUser!: number;
 
     @ManyToOne(() => AvisEntity, (avis) => avis.reponses, {nullable: true, onDelete: 'CASCADE'})
     @JoinColumn({name: 'id_avis_1'})

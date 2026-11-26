@@ -36,6 +36,16 @@ const favoriteListMeta = {
     }
 };
 
+const avisListMeta = {
+    type: "object",
+    properties: {
+        noteMoyenne: {type: "number", nullable: true, example: 8.33},
+        nombreNotes: {type: "integer"},
+        total: {type: "integer", description: "Nombre d'avis racines"},
+        totalMessages: {type: "integer", description: "Avis + réponses"}
+    }
+};
+
 export const openapiSpec = {
     openapi: "3.0.3",
     info: {
@@ -48,7 +58,8 @@ export const openapiSpec = {
         {name: "Users"},
         {name: "Animes"},
         {name: "Watchlist"},
-        {name: "Favorites"}
+        {name: "Favorites"},
+        {name: "Avis"}
     ],
     components: {
         securitySchemes: {
@@ -99,7 +110,9 @@ export const openapiSpec = {
                     genres: {type: "array", items: ref("Libelle")},
                     themes: {type: "array", items: ref("Libelle")},
                     producteurs: {type: "array", items: ref("Nom")},
-                    sources: {type: "array", items: ref("AnimeSource")}
+                    sources: {type: "array", items: ref("AnimeSource")},
+                    noteMoyenne: {type: "number", nullable: true, description: "Moyenne des notes des avis racines", example: 8.33},
+                    nombreNotes: {type: "integer"}
                 }
             },
             AnimeCreate: {
@@ -237,6 +250,55 @@ export const openapiSpec = {
                 required: ["idAnimes"],
                 properties: {
                     idAnimes: idArray
+                }
+            },
+            Avis: {
+                type: "object",
+                properties: {
+                    id: {type: "integer"},
+                    anime: ref("Nom"),
+                    idAvisParent: {type: "integer", nullable: true},
+                    auteur: ref("UserPublic"),
+                    note: {type: "integer", minimum: 0, maximum: 10, nullable: true},
+                    commentaire: {type: "string", nullable: true},
+                    categorie: {allOf: [ref("Libelle")], nullable: true},
+                    date: {type: "string", format: "date", nullable: true}
+                }
+            },
+            AvisFil: {
+                allOf: [ref("Avis"), {
+                    type: "object",
+                    properties: {
+                        reponses: {type: "array", items: ref("AvisFil")}
+                    }
+                }]
+            },
+            AvisCreate: {
+                type: "object",
+                required: ["note"],
+                additionalProperties: false,
+                properties: {
+                    note: {type: "integer", minimum: 0, maximum: 10},
+                    commentaire: {type: "string", maxLength: 2000, nullable: true},
+                    idCategorie: {type: "integer", minimum: 1, nullable: true}
+                }
+            },
+            AvisUpdate: {
+                type: "object",
+                additionalProperties: false,
+                description: "Sur une réponse, seul commentaire est accepté",
+                properties: {
+                    note: {type: "integer", minimum: 0, maximum: 10},
+                    commentaire: {type: "string", maxLength: 2000, nullable: true},
+                    idCategorie: {type: "integer", minimum: 1, nullable: true}
+                }
+            },
+            ReponseCreate: {
+                type: "object",
+                required: ["commentaire"],
+                additionalProperties: false,
+                properties: {
+                    commentaire: {type: "string", minLength: 1, maxLength: 2000}
                 }
             }
         }
@@ -617,6 +679,106 @@ export const openapiSpec = {
                     400: error("Validation échouée"),
                     401: error("Token manquant, expiré, invalide ou révoqué"),
                     404: error("Anime absent des favoris")
+                }
+            }
+        },
+        "/anime/{id}/reviews": {
+            get: {
+                tags: ["Avis"],
+                summary: "Lister les avis d'un anime en fils de discussion, avec la note moyenne",
+                parameters: [idParam],
+                responses: {
+                    200: success("Avis", {type: "array", items: ref("AvisFil")}, avisListMeta),
+                    400: error("Validation échouée"),
+                    404: error("Anime introuvable")
+                }
+            },
+            post: {
+                tags: ["Avis"],
+                summary: "Publier un avis noté (un seul par utilisateur et par anime)",
+                security: bearer,
+                parameters: [idParam],
+                requestBody: {required: true, content: json(ref("AvisCreate"))},
+                responses: {
+                    201: success("Avis", ref("Avis")),
+                    400: error("Validation échouée ou catégorie inexistante"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Anime introuvable"),
+                    409: error("Avis déjà publié sur cet anime")
+                }
+            }
+        },
+        "/reviews/categories": {
+            get: {
+                tags: ["Avis"],
+                summary: "Lister les catégories d'appréciation",
+                responses: {
+                    200: success("Catégories", {type: "array", items: ref("Libelle")})
+                }
+            }
+        },
+        "/reviews/{id}": {
+            get: {
+                tags: ["Avis"],
+                summary: "Détail d'un avis avec ses réponses",
+                parameters: [idParam],
+                responses: {
+                    200: success("Avis", ref("AvisFil")),
+                    400: error("Validation échouée"),
+                    404: error("Avis introuvable")
+                }
+            },
+            patch: {
+                tags: ["Avis"],
+                summary: "Modifier son avis ou sa réponse",
+                security: bearer,
+                parameters: [idParam],
+                requestBody: {required: true, content: json(ref("AvisUpdate"))},
+                responses: {
+                    200: success("Avis", ref("Avis")),
+                    400: error("Validation échouée, corps vide, catégorie inexistante ou champ interdit sur une réponse"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    403: error("Réservé à l'auteur"),
+                    404: error("Avis introuvable")
+                }
+            },
+            delete: {
+                tags: ["Avis"],
+                summary: "Supprimer un avis et ses réponses (auteur ou MODERATE_REVIEWS)",
+                security: bearer,
+                parameters: [idParam],
+                responses: {
+                    204: {description: "Avis supprimé"},
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    403: error("Réservé à l'auteur ou à un modérateur"),
+                    404: error("Avis introuvable")
+                }
+            }
+        },
+        "/reviews/{id}/replies": {
+            post: {
+                tags: ["Avis"],
+                summary: "Répondre à un avis ou à une réponse",
+                security: bearer,
+                parameters: [idParam],
+                requestBody: {required: true, content: json(ref("ReponseCreate"))},
+                responses: {
+                    201: success("Réponse", ref("Avis")),
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
+                    404: error("Avis introuvable")
+                }
+            }
+        },
+        "/user/me/reviews": {
+            get: {
+                tags: ["Avis"],
+                summary: "Lister mes avis et réponses",
+                security: bearer,
+                responses: {
+                    200: success("Avis", {type: "array", items: ref("Avis")}, {type: "object", properties: {total: {type: "integer"}}}),
+                    401: error("Token manquant, expiré, invalide ou révoqué")
                 }
             }
         }

@@ -4,6 +4,7 @@ export const Perm = Object.freeze({
     EDIT_ANIME:     1n << 2n,
     DELETE_ANIME:   1n << 3n,
     MANAGE_USERS:   1n << 4n,
+    MODERATE_REVIEWS: 1n << 5n,
     ADMINISTRATOR:  1n << 62n,
 });
 

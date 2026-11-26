@@ -2,7 +2,7 @@
 
 API REST Node.js (Express 5 + TypeScript) de gestion d'animes et d'utilisateurs, avec authentification JWT, permissions, base MySQL via TypeORM et envoi de mails via Nodemailer.
 
-Architecture découpée par contexte (`anime`, `user`, `auth`, `watchlist`, `favorite`) en couches `api` / `app` / `domain` / `infra`.
+Architecture découpée par contexte (`anime`, `user`, `auth`, `watchlist`, `favorite`, `avis`) en couches `api` / `app` / `domain` / `infra`.
 
 ## Prérequis
 
@@ -53,7 +53,7 @@ Installation complète avec les données de démo :
 npm run db:reset
 ```
 
-Comptes de démo : `admin`, `first_user` — mot de passe `password123`.
+Comptes de démo : `admin`, `first_user`, `moderator` (permission `MODERATE_REVIEWS`) — mot de passe `password123`.
 
 Alternative à `db:schema` : passer `synchronize: true` dans `src/core/configs/database/typeorm.config.ts`. TypeORM crée alors les tables au démarrage de l'API. À utiliser uniquement en développement.
 
@@ -139,3 +139,18 @@ Statuts : `a_voir`, `en_cours`, `vu`. Atteindre le dernier épisode marque l'ani
 | DELETE | `/anime/:id/favorite` | 🔒 |
 
 Les deux contextes partagent la table `vu_or_a_voir` mais chacun ne gère que ses propres colonnes : l'un peut être retiré sans impacter l'autre.
+
+### Avis — avis et commentaires
+
+| Méthode | Route | Accès |
+|---|---|---|
+| GET | `/anime/:id/reviews` | Public |
+| POST | `/anime/:id/reviews` | 🔒 |
+| GET | `/reviews/categories` | Public |
+| GET | `/reviews/:id` | Public |
+| POST | `/reviews/:id/replies` | 🔒 |
+| PATCH | `/reviews/:id` | 🔒 Auteur |
+| DELETE | `/reviews/:id` | 🔒 Auteur ou `MODERATE_REVIEWS` |
+| GET | `/user/me/reviews` | 🔒 |
+
+`GET /anime/:id` et `GET /anime` renvoient `noteMoyenne` et `nombreNotes`, calculés sur les avis racines.

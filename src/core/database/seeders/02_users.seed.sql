@@ -8,7 +8,8 @@ START TRANSACTION;
 
 INSERT INTO `user_` (`id_user`, `identifiant`, `email`, `mot_de_passe`, `perm`) VALUES
 (1, 'admin', 'admin@animeapi.local', '$2b$10$mVt0DQ0Vb3.SrnOqTpgix.CIIrO4mWJNQRfBDOiAQmQ3Q4z13jPqe', 4611686018427387935),
-(2, 'first_user', 'user@animeapi.local', '$2b$10$mVt0DQ0Vb3.SrnOqTpgix.CIIrO4mWJNQRfBDOiAQmQ3Q4z13jPqe', 15);
+(2, 'first_user', 'user@animeapi.local', '$2b$10$mVt0DQ0Vb3.SrnOqTpgix.CIIrO4mWJNQRfBDOiAQmQ3Q4z13jPqe', 15),
+(3, 'moderator', 'moderator@animeapi.local', '$2b$10$mVt0DQ0Vb3.SrnOqTpgix.CIIrO4mWJNQRfBDOiAQmQ3Q4z13jPqe', 47);
 
 INSERT INTO `categorie_appreciation` (`id_categ_user`, `categorie`) VALUES
 (1, 'Chef-d''œuvre'),

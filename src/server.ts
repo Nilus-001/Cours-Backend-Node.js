@@ -9,6 +9,7 @@ import userRoutes from "./context/user/api/routes/user.routes";
 import authRoutes from "./context/auth/api/routes/auth.routes";
 import {animeWatchlistRoutes, userWatchlistRoutes} from "./context/watchlist/api/routes/watchlist.routes";
 import {animeFavoriteRoutes, userFavoriteRoutes} from "./context/favorite/api/routes/favorite.routes";
+import {animeAvisRoutes, avisRoutes, userAvisRoutes} from "./context/avis/api/routes/avis.routes";
 import {errorMiddleware, notFoundMiddleware} from "./core/http/errors/middleware/api.middleware";
 import {registerListeners} from "./core/events/listeners";
 import {verifyMailer} from "./core/mailer/nodemailer.mailer";
@@ -33,9 +34,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.use('/anime', animeWatchlistRoutes);
 app.use('/anime', animeFavoriteRoutes);
+app.use('/anime', animeAvisRoutes);
 app.use('/anime', animeRoutes);
 app.use('/user/me', userWatchlistRoutes);
 app.use('/user/me', userFavoriteRoutes);
+app.use('/user/me', userAvisRoutes);
+app.use('/reviews', avisRoutes);
 app.use('/user', userRoutes);
 app.use('/auth', authRoutes);
 

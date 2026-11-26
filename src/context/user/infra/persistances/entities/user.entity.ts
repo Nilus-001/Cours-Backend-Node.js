@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Relation} from "typeorm";
-import {AvisEntity} from "../../../../../entities/avis.entity";
+import {AvisEntity} from "../../../../avis/infra/persistances/entities/avis.entity";
 
 const bigintTransformer = {
     to: (value?: bigint | null) => value?.toString(),

@@ -1,11 +1,11 @@
-import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation} from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation, VirtualColumn} from "typeorm";
 import {CategorieEntity} from "./categorie.entity";
 import {SourceEntity} from "./source.entity";
 import {ThemeEntity} from "./theme.entity";
 import {ProducteurEntity} from "./producteur.entity";
 import {GenreEntity} from "./genre.entity";
 import {EpisodeEntity} from "./episode.entity";
-import {AvisEntity} from "../../../../../entities/avis.entity";
+import {AvisEntity} from "../../../../avis/infra/persistances/entities/avis.entity";
 import {NoterEntity} from "./noter.entity";
 
 @Entity('anime')
@@ -60,6 +60,20 @@ export class AnimeEntity {
         inverseJoinColumn: {name: 'id_genre', referencedColumnName: 'id'},
     })
     genres!: Relation<GenreEntity[]>;
+
+    @VirtualColumn({
+        type: 'float',
+        query: (alias) => `SELECT ROUND(AVG(n.note_user), 2) FROM avis n WHERE n.id_anime = ${alias}.id_anime AND n.id_avis_1 IS NULL AND n.note_user IS NOT NULL`,
+        transformer: {to: (value) => value, from: (value) => (value == null ? null : Number(value))},
+    })
+    noteMoyenne!: number | null;
+
+    @VirtualColumn({
+        type: 'int',
+        query: (alias) => `SELECT COUNT(n.note_user) FROM avis n WHERE n.id_anime = ${alias}.id_anime AND n.id_avis_1 IS NULL`,
+        transformer: {to: (value) => value, from: (value) => Number(value ?? 0)},
+    })
+    nombreNotes!: number;
 
     @OneToMany(() => EpisodeEntity, (episode) => episode.anime)
     episodes!: Relation<EpisodeEntity[]>;

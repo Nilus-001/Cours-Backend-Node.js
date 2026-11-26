@@ -28,6 +28,8 @@ export class AnimePresenter {
     themes!: LibellePresenter[];
     producteurs!: NomPresenter[];
     sources!: AnimeSourcePresenter[];
+    noteMoyenne!: number | null;
+    nombreNotes!: number;
 }
 
 const toDateString = (date: Date | string | null | undefined): string | null => {
@@ -51,4 +53,6 @@ export const toAnimePresenter = (anime: AnimeEntity): AnimePresenter => ({
         dateParution: toDateString(source.dateParution),
         type: source.type ? {id: source.type.id, libelle: source.type.libelle} : null,
     })),
+    noteMoyenne: anime.noteMoyenne ?? null,
+    nombreNotes: anime.nombreNotes ?? 0,
 });
