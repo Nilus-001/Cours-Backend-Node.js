@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 import {DataSource} from "typeorm";
+import mysql from "mysql2";
 import {entities} from "../../../entities";
 import getEnv from "../../utils/getEnv.utils";
 
@@ -11,6 +12,7 @@ const DB_DATABASE = getEnv('DB_DATABASE');
 
 export const db = new DataSource({
     type: 'mysql',
+    driver: mysql,
     host: DB_HOST,
     port: DB_PORT,
     username: DB_USERNAME,
