@@ -1,4 +1,4 @@
-﻿import * as animeRepository from "../../../infra/persistances/repositories/anime.repository";
+import * as animeRepository from "../../../infra/persistances/repositories/anime.repository";
 import {IAnimeRepository} from "../../../app/interfaces/anime.repository.interface";
 
 export const typeAnimeRepository: IAnimeRepository = {
@@ -7,4 +7,4 @@ export const typeAnimeRepository: IAnimeRepository = {
     addAnime: animeRepository.addAnime,
     updateAnime: animeRepository.updateAnime,
     deleteAnime: animeRepository.deleteAnime,
-};
+};

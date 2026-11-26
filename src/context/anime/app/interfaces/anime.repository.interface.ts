@@ -1,4 +1,4 @@
-﻿import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
+import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
 import {AnimeToCreateInput, AnimeToUpdateInput} from "../inputs/anime.input";
 import {AnimeFilterInput} from "../inputs/animeFilter.input";
 
@@ -9,4 +9,4 @@ export interface IAnimeRepository {
     addAnime(anime: AnimeToCreateInput): Promise<AnimeEntity>;
     updateAnime(id: number, anime: AnimeToUpdateInput): Promise<AnimeEntity | null>;
     deleteAnime(id: number): Promise<void>;
-}
+}

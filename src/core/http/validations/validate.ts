@@ -1,4 +1,4 @@
-﻿import {Source} from "../../../types/source";
+import {Source} from "../../../types/source";
 import { plainToInstance, ClassConstructor } from "class-transformer";
 import { validate, ValidationError } from "class-validator";
 import { Request, Response, NextFunction } from "express";

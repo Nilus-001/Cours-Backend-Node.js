@@ -1,4 +1,4 @@
-﻿import {NextFunction, Request, Response} from "express";
+import {NextFunction, Request, Response} from "express";
 import {hasPerm} from "./utils/permission.util";
 import {PermissionDeniedError} from "../errors/common.errors";
 import {Perm} from "./perm.list";

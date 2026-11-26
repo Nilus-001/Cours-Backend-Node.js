@@ -1,4 +1,4 @@
-﻿export const Perm = Object.freeze({
+export const Perm = Object.freeze({
     VIEW_ANIME:     1n << 0n,
     CREATE_ANIME:   1n << 1n,
     EDIT_ANIME:     1n << 2n,

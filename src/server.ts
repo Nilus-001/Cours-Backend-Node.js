@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import 'reflect-metadata';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';

@@ -1,4 +1,4 @@
-﻿
+
 
 const getEnv = (key: string): string => {
     const value = process.env[key];

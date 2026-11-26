@@ -1,4 +1,4 @@
-﻿import {Request, Response, NextFunction} from "express";
+import {Request, Response, NextFunction} from "express";
 import {ValidationError} from "class-validator";
 import {DomainError} from "../../errorDomain";
 import {InvalidJsonError, RouteNotFoundError, UnknownError, ValidateError} from "../common.errors";

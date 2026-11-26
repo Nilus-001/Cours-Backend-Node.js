@@ -1,4 +1,4 @@
-﻿import {IAnimeRepository} from "../interfaces/anime.repository.interface";
+import {IAnimeRepository} from "../interfaces/anime.repository.interface";
 import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
 import {AnimeNotFoundError} from "../../domain/errors/anime.errors";
 
