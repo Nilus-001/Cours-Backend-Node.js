@@ -1,18 +1,18 @@
-import {ISuiviRepository} from "../interfaces/suivi.repository.interface";
-import {VuOrAVoirEntity} from "../../infra/persistances/entities/vu-or-a-voir.entity";
-import {SuiviOrderError} from "../../domain/errors/watchlist.errors";
-import {SuiviStatut} from "../../domain/suivi.statut";
-import {sameIds} from "../utils/suivi.utils";
+import {IWatchlistRepository} from "../interfaces/watchlist.repository.interface";
+import {WatchlistEntity} from "../../infra/persistances/entities/watchlist.entity";
+import {WatchlistOrderError} from "../../domain/errors/watchlist.errors";
+import {WatchlistStatut} from "../../domain/watchlist.statut";
+import {sameIds} from "../utils/watchlist.utils";
 
 export class ReorderWatchlistUseCase {
-    constructor(private readonly suiviRepository: ISuiviRepository) {}
+    constructor(private readonly watchlistRepository: IWatchlistRepository) {}
 
-    async execute(idUser: number, idAnimes: number[]): Promise<VuOrAVoirEntity[]> {
-        const actuels = (await this.suiviRepository.getSuivis(idUser, {statut: SuiviStatut.A_VOIR})).map((s) => s.idAnime);
+    async execute(idUser: number, idAnimes: number[]): Promise<WatchlistEntity[]> {
+        const actuels = (await this.watchlistRepository.getEntries(idUser, {statut: WatchlistStatut.A_VOIR})).map((e) => e.idAnime);
         if (!sameIds(actuels, idAnimes)) {
-            throw new SuiviOrderError({attendus: actuels});
+            throw new WatchlistOrderError({attendus: actuels});
         }
-        await this.suiviRepository.updateOrdres(idUser, idAnimes);
-        return this.suiviRepository.getSuivis(idUser, {statut: SuiviStatut.A_VOIR});
+        await this.watchlistRepository.updateOrdres(idUser, idAnimes);
+        return this.watchlistRepository.getEntries(idUser, {statut: WatchlistStatut.A_VOIR});
     }
 }

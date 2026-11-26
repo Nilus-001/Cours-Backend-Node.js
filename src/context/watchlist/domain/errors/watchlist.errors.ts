@@ -1,6 +1,6 @@
 import {DomainError} from "../../../../core/http/errorDomain";
 
-export class SuiviNotFoundError extends DomainError {
+export class TrackingNotFoundError extends DomainError {
     constructor(meta?: any) {
         super(404, "Err-suivi-notfound-404", "Cet anime n'est pas suivi", meta);
     }
@@ -24,21 +24,9 @@ export class WatchlistNotFoundError extends DomainError {
     }
 }
 
-export class FavoriAlreadyError extends DomainError {
+export class WatchlistOrderError extends DomainError {
     constructor(meta?: any) {
-        super(409, "Err-favori-exists-409", "Anime déjà en favori", meta);
-    }
-}
-
-export class FavoriNotFoundError extends DomainError {
-    constructor(meta?: any) {
-        super(404, "Err-favori-notfound-404", "Anime absent des favoris", meta);
-    }
-}
-
-export class SuiviOrderError extends DomainError {
-    constructor(meta?: any) {
-        super(400, "Err-suivi-order-400", "La liste doit contenir exactement les animes concernés", meta);
+        super(400, "Err-watchlist-order-400", "La liste doit contenir exactement les animes à voir", meta);
     }
 }
 

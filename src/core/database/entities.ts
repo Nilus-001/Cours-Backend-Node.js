@@ -17,7 +17,8 @@ import {StudioEntity} from "../../context/anime/infra/persistances/entities/stud
 import {ThemeEntity} from "../../context/anime/infra/persistances/entities/theme.entity";
 import {TypeEntity} from "../../context/anime/infra/persistances/entities/type.entity";
 import {UserEntity} from "../../context/user/infra/persistances/entities/user.entity";
-import {VuOrAVoirEntity} from "../../context/watchlist/infra/persistances/entities/vu-or-a-voir.entity";
+import {WatchlistEntity} from "../../context/watchlist/infra/persistances/entities/watchlist.entity";
+import {FavoriteEntity} from "../../context/favorite/infra/persistances/entities/favorite.entity";
 
 export const entities = [
     AnimeEntity,
@@ -39,5 +40,6 @@ export const entities = [
     ThemeEntity,
     TypeEntity,
     UserEntity,
-    VuOrAVoirEntity,
+    WatchlistEntity,
+    FavoriteEntity,
 ];

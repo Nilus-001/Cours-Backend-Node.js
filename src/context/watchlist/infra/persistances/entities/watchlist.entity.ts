@@ -1,9 +1,8 @@
 import {Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, Relation} from "typeorm";
 import {AnimeEntity} from "../../../../anime/infra/persistances/entities/anime.entity";
-import {UserEntity} from "../../../../user/infra/persistances/entities/user.entity";
 
 @Entity('vu_or_a_voir')
-export class VuOrAVoirEntity {
+export class WatchlistEntity {
     @PrimaryColumn('int', {name: 'id_anime'})
     idAnime!: number;
 
@@ -11,7 +10,7 @@ export class VuOrAVoirEntity {
     idUser!: number;
 
     @Column('date', {name: 'date_visionnage', nullable: true})
-    dateVisionnage!: Date | null;
+    dateVisionnage!: Date | string | null;
 
     @Column('boolean', {name: 'is_watchlist', default: false})
     isWatchlist!: boolean;
@@ -22,17 +21,7 @@ export class VuOrAVoirEntity {
     @Column('int', {nullable: true})
     ordre!: number | null;
 
-    @Column('boolean', {name: 'est_favoris', default: false})
-    estFavoris!: boolean;
-
-    @Column('int', {name: 'classement_favoris', nullable: true})
-    classementFavoris!: number | null;
-
-    @ManyToOne(() => AnimeEntity, (anime) => anime.vuOrAVoir, {onDelete: 'CASCADE'})
+    @ManyToOne(() => AnimeEntity, {onDelete: 'CASCADE'})
     @JoinColumn({name: 'id_anime'})
     anime!: Relation<AnimeEntity>;
-
-    @ManyToOne(() => UserEntity, (user) => user.vuOrAVoir, {onDelete: 'CASCADE'})
-    @JoinColumn({name: 'id_user'})
-    user!: Relation<UserEntity>;
 }

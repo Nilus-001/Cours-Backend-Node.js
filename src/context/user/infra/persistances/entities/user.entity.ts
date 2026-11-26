@@ -1,6 +1,5 @@
 import {Column, Entity, OneToMany, PrimaryGeneratedColumn, Relation} from "typeorm";
 import {AvisEntity} from "../../../../../entities/avis.entity";
-import {VuOrAVoirEntity} from "../../../../watchlist/infra/persistances/entities/vu-or-a-voir.entity";
 
 const bigintTransformer = {
     to: (value?: bigint | null) => value?.toString(),
@@ -26,7 +25,4 @@ export class UserEntity {
 
     @OneToMany(() => AvisEntity, (avis) => avis.user)
     avis!: Relation<AvisEntity[]>;
-
-    @OneToMany(() => VuOrAVoirEntity, (vu) => vu.user)
-    vuOrAVoir!: Relation<VuOrAVoirEntity[]>;
 }

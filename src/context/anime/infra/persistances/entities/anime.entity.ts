@@ -6,7 +6,6 @@ import {ProducteurEntity} from "./producteur.entity";
 import {GenreEntity} from "./genre.entity";
 import {EpisodeEntity} from "./episode.entity";
 import {AvisEntity} from "../../../../../entities/avis.entity";
-import {VuOrAVoirEntity} from "../../../../watchlist/infra/persistances/entities/vu-or-a-voir.entity";
 import {NoterEntity} from "./noter.entity";
 
 @Entity('anime')
@@ -67,9 +66,6 @@ export class AnimeEntity {
 
     @OneToMany(() => AvisEntity, (avis) => avis.anime)
     avis!: Relation<AvisEntity[]>;
-
-    @OneToMany(() => VuOrAVoirEntity, (vu) => vu.anime)
-    vuOrAVoir!: Relation<VuOrAVoirEntity[]>;
 
     @OneToMany(() => NoterEntity, (noter) => noter.anime)
     notes!: Relation<NoterEntity[]>;

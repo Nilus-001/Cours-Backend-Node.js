@@ -2,7 +2,7 @@
 
 API REST Node.js (Express 5 + TypeScript) de gestion d'animes et d'utilisateurs, avec authentification JWT, permissions, base MySQL via TypeORM et envoi de mails via Nodemailer.
 
-Architecture découpée par contexte (`anime`, `user`, `auth`) en couches `api` / `app` / `domain` / `infra`.
+Architecture découpée par contexte (`anime`, `user`, `auth`, `watchlist`, `favorite`) en couches `api` / `app` / `domain` / `infra`.
 
 ## Prérequis
 
@@ -113,3 +113,29 @@ Documentation Swagger : http://localhost:3000/api-docs
 | PATCH | `/user/:id/update` | 🔒 Soi-même ou `MANAGE_USERS` |
 | PATCH | `/user/:id/perm` | 🔒 `ADMINISTRATOR` |
 | DELETE | `/user/:id/delete` | 🔒 Soi-même ou `MANAGE_USERS` |
+
+### Watchlist — suivi de visionnage
+
+Statuts : `a_voir`, `en_cours`, `vu`. Atteindre le dernier épisode marque l'anime comme vu.
+
+| Méthode | Route | Accès |
+|---|---|---|
+| GET | `/user/me/watchlist?statut=` | 🔒 |
+| PATCH | `/user/me/watchlist/order` | 🔒 |
+| GET | `/anime/:id/tracking` | 🔒 |
+| DELETE | `/anime/:id/tracking` | 🔒 |
+| POST | `/anime/:id/watchlist` | 🔒 |
+| DELETE | `/anime/:id/watchlist` | 🔒 |
+| PATCH | `/anime/:id/progress` | 🔒 |
+
+### Favorites — favoris
+
+| Méthode | Route | Accès |
+|---|---|---|
+| GET | `/user/me/favorites` | 🔒 |
+| PATCH | `/user/me/favorites/order` | 🔒 |
+| GET | `/anime/:id/favorite` | 🔒 |
+| POST | `/anime/:id/favorite` | 🔒 |
+| DELETE | `/anime/:id/favorite` | 🔒 |
+
+Les deux contextes partagent la table `vu_or_a_voir` mais chacun ne gère que ses propres colonnes : l'un peut être retiré sans impacter l'autre.

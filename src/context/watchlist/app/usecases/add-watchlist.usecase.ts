@@ -1,27 +1,27 @@
-import {ISuiviRepository} from "../interfaces/suivi.repository.interface";
-import {VuOrAVoirEntity} from "../../infra/persistances/entities/vu-or-a-voir.entity";
+import {IWatchlistRepository} from "../interfaces/watchlist.repository.interface";
+import {WatchlistEntity} from "../../infra/persistances/entities/watchlist.entity";
 import {WatchlistAlreadyError, WatchlistStartedError} from "../../domain/errors/watchlist.errors";
-import {getSuiviStatut, SuiviStatut} from "../../domain/suivi.statut";
-import {assertAnimeExists, toSuiviInput} from "../utils/suivi.utils";
+import {getWatchlistStatut, WatchlistStatut} from "../../domain/watchlist.statut";
+import {assertAnimeExists, toWatchlistInput} from "../utils/watchlist.utils";
 
 export class AddWatchlistUseCase {
-    constructor(private readonly suiviRepository: ISuiviRepository) {}
+    constructor(private readonly watchlistRepository: IWatchlistRepository) {}
 
-    async execute(idUser: number, idAnime: number): Promise<VuOrAVoirEntity> {
-        await assertAnimeExists(this.suiviRepository, idAnime);
-        const existant = await this.suiviRepository.getSuivi(idUser, idAnime);
-        const statut = existant ? getSuiviStatut(existant) : null;
+    async execute(idUser: number, idAnime: number): Promise<WatchlistEntity> {
+        await assertAnimeExists(this.watchlistRepository, idAnime);
+        const existant = await this.watchlistRepository.getEntry(idUser, idAnime);
+        const statut = existant ? getWatchlistStatut(existant) : null;
 
-        if (statut === SuiviStatut.A_VOIR) {
+        if (statut === WatchlistStatut.A_VOIR) {
             throw new WatchlistAlreadyError({idAnime});
         }
-        if (statut === SuiviStatut.EN_COURS || statut === SuiviStatut.VU) {
+        if (statut === WatchlistStatut.EN_COURS || statut === WatchlistStatut.VU) {
             throw new WatchlistStartedError({idAnime, statut});
         }
 
-        const suivi = toSuiviInput(idUser, idAnime, existant);
-        suivi.isWatchlist = true;
-        suivi.ordre = await this.suiviRepository.getMaxOrdre(idUser) + 1;
-        return this.suiviRepository.saveSuivi(suivi);
+        const entry = toWatchlistInput(idUser, idAnime, existant);
+        entry.isWatchlist = true;
+        entry.ordre = await this.watchlistRepository.getMaxOrdre(idUser) + 1;
+        return this.watchlistRepository.saveEntry(entry);
     }
 }

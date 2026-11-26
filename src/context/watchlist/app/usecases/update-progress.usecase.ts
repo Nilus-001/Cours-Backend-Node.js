@@ -1,49 +1,49 @@
-import {ISuiviRepository} from "../interfaces/suivi.repository.interface";
-import {ProgressInput} from "../inputs/suivi.input";
-import {VuOrAVoirEntity} from "../../infra/persistances/entities/vu-or-a-voir.entity";
+import {IWatchlistRepository} from "../interfaces/watchlist.repository.interface";
+import {ProgressInput} from "../inputs/watchlist.input";
+import {WatchlistEntity} from "../../infra/persistances/entities/watchlist.entity";
 import {EpisodeOutOfRangeError, ProgressEmptyError} from "../../domain/errors/watchlist.errors";
-import {getSuiviStatut, SuiviStatut} from "../../domain/suivi.statut";
-import {assertAnimeExists, persistSuivi, toSuiviInput} from "../utils/suivi.utils";
+import {getWatchlistStatut, WatchlistStatut} from "../../domain/watchlist.statut";
+import {assertAnimeExists, persistEntry, toWatchlistInput} from "../utils/watchlist.utils";
 
 export class UpdateProgressUseCase {
-    constructor(private readonly suiviRepository: ISuiviRepository) {}
+    constructor(private readonly watchlistRepository: IWatchlistRepository) {}
 
-    async execute(idUser: number, idAnime: number, progress: ProgressInput): Promise<VuOrAVoirEntity | null> {
+    async execute(idUser: number, idAnime: number, progress: ProgressInput): Promise<WatchlistEntity | null> {
         if (progress.episode === undefined && progress.termine === undefined) {
             throw new ProgressEmptyError();
         }
-        await assertAnimeExists(this.suiviRepository, idAnime);
+        await assertAnimeExists(this.watchlistRepository, idAnime);
 
-        const totalEpisodes = await this.suiviRepository.countEpisodes(idAnime);
+        const totalEpisodes = await this.watchlistRepository.countEpisodes(idAnime);
         const episode = progress.episode ?? null;
         if (episode !== null && totalEpisodes > 0 && episode > totalEpisodes) {
             throw new EpisodeOutOfRangeError({episode, totalEpisodes});
         }
 
-        const existant = await this.suiviRepository.getSuivi(idUser, idAnime);
-        const suivi = toSuiviInput(idUser, idAnime, existant);
+        const existant = await this.watchlistRepository.getEntry(idUser, idAnime);
+        const entry = toWatchlistInput(idUser, idAnime, existant);
 
         if (progress.episode !== undefined) {
-            suivi.currentWatch = episode;
+            entry.currentWatch = episode;
         }
 
         const termine = progress.termine ?? (episode !== null && totalEpisodes > 0 && episode === totalEpisodes ? true : undefined);
         if (termine === true) {
-            suivi.dateVisionnage = suivi.dateVisionnage ?? new Date();
-            if (suivi.currentWatch === null && totalEpisodes > 0) {
-                suivi.currentWatch = totalEpisodes;
+            entry.dateVisionnage = entry.dateVisionnage ?? new Date();
+            if (entry.currentWatch === null && totalEpisodes > 0) {
+                entry.currentWatch = totalEpisodes;
             }
         }
         if (termine === false) {
-            suivi.dateVisionnage = null;
+            entry.dateVisionnage = null;
         }
 
-        const statut = getSuiviStatut(suivi);
-        if (statut === SuiviStatut.EN_COURS || statut === SuiviStatut.VU) {
-            suivi.isWatchlist = false;
-            suivi.ordre = null;
+        const statut = getWatchlistStatut(entry);
+        if (statut === WatchlistStatut.EN_COURS || statut === WatchlistStatut.VU) {
+            entry.isWatchlist = false;
+            entry.ordre = null;
         }
 
-        return persistSuivi(this.suiviRepository, suivi);
+        return persistEntry(this.watchlistRepository, entry);
     }
 }

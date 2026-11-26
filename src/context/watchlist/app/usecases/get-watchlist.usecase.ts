@@ -1,11 +1,11 @@
-import {ISuiviRepository} from "../interfaces/suivi.repository.interface";
-import {SuiviFilterInput} from "../inputs/suivi.input";
-import {VuOrAVoirEntity} from "../../infra/persistances/entities/vu-or-a-voir.entity";
+import {IWatchlistRepository} from "../interfaces/watchlist.repository.interface";
+import {WatchlistFilterInput} from "../inputs/watchlist.input";
+import {WatchlistEntity} from "../../infra/persistances/entities/watchlist.entity";
 
 export class GetWatchlistUseCase {
-    constructor(private readonly suiviRepository: ISuiviRepository) {}
+    constructor(private readonly watchlistRepository: IWatchlistRepository) {}
 
-    async execute(idUser: number, filters: SuiviFilterInput): Promise<VuOrAVoirEntity[]> {
-        return this.suiviRepository.getSuivis(idUser, filters);
+    async execute(idUser: number, filters: WatchlistFilterInput): Promise<WatchlistEntity[]> {
+        return this.watchlistRepository.getEntries(idUser, filters);
     }
 }
