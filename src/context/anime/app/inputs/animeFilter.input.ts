@@ -1,4 +1,4 @@
-export class animeFilterInput {
+export class AnimeFilterInput {
     nom?: string;
     dateAnnonce?: string;
     idCategorie?: number;

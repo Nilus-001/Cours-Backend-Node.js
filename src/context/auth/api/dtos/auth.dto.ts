@@ -1,13 +1,13 @@
 import {IsJWT, IsNotEmpty, IsString} from "class-validator";
 
-export class refreshTokenDTO {
+export class RefreshTokenDto {
     @IsString()
     @IsNotEmpty({message: "Le refresh token est obligatoire"})
     @IsJWT({message: "Le refresh token est invalide"})
     refreshToken!: string;
 }
 
-export class userLoginDTO {
+export class UserLoginDto {
     @IsString()
     @IsNotEmpty({message: "L'identifiant est obligatoire"})
     identifiant!: string;

@@ -1,6 +1,6 @@
 import {IsOptional, IsString} from "class-validator";
 
-export class userFilterDTO {
+export class UserFilterDto {
     @IsOptional()
     @IsString()
     identifiant?: string;

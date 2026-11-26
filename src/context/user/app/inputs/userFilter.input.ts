@@ -1,3 +1,3 @@
-export class userFilterInput {
+export class UserFilterInput {
     identifiant?: string;
 }

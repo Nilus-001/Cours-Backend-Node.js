@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 import {plainToInstance} from "class-transformer";
-import {userIdParamDTO} from "../dtos/user.dto";
-import {userFilterDTO} from "../dtos/userFilter.dto";
-import {userFilterInput} from "../../app/inputs/userFilter.input";
+import {UserIdParamDto} from "../dtos/user.dto";
+import {UserFilterDto} from "../dtos/userFilter.dto";
+import {UserFilterInput} from "../../app/inputs/userFilter.input";
 import {typeUserRepository} from "../../infra/persistances/repositories/user.type.repository";
 import {toUserPresenter, toUserPublicPresenter} from "../presenters/user.presenter";
 import {GetUsersUseCase} from "../../app/usecases/get-user.usecase";
@@ -19,11 +19,11 @@ const updateUserUseCase = new UpdateUserUseCase(typeUserRepository);
 const deleteUserUseCase = new DeleteUserUseCase(typeUserRepository);
 const updateUserPermUseCase = new UpdateUserPermUseCase(typeUserRepository);
 
-const getId = (req: Request) => plainToInstance(userIdParamDTO, req.params).id;
+const getId = (req: Request) => plainToInstance(UserIdParamDto, req.params).id;
 
 export const getUsers = async (req: Request, res: Response) => {
-    const {identifiant} = plainToInstance(userFilterDTO, req.query);
-    const filters: userFilterInput = {identifiant};
+    const {identifiant} = plainToInstance(UserFilterDto, req.query);
+    const filters: UserFilterInput = {identifiant};
 
     const users = await getUsersUseCase.execute(filters);
 

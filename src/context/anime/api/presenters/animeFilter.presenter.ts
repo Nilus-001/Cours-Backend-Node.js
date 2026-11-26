@@ -1,6 +1,6 @@
-import {animeFilterInput} from "../../app/inputs/animeFilter.input";
+import {AnimeFilterInput} from "../../app/inputs/animeFilter.input";
 
-export class animeFilterPresenter {
+export class AnimeFilterPresenter {
     nom?: string;
     dateAnnonce?: string;
     idCategorie?: number;
@@ -8,5 +8,5 @@ export class animeFilterPresenter {
     idTheme?: number;
 }
 
-export const toAnimeFilterPresenter = (filters: animeFilterInput): animeFilterPresenter =>
+export const toAnimeFilterPresenter = (filters: AnimeFilterInput): AnimeFilterPresenter =>
     Object.fromEntries(Object.entries(filters ?? {}).filter(([, value]) => value !== undefined && value !== ''));

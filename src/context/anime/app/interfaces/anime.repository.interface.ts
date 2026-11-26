@@ -1,10 +1,10 @@
 ﻿import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
-import {animeToCreateInput} from "../inputs/anime.input";
-import {animeFilterInput} from "../inputs/animeFilter.input";
+import {AnimeToCreateInput} from "../inputs/anime.input";
+import {AnimeFilterInput} from "../inputs/animeFilter.input";
 
 
 export interface IAnimeRepository {
-    getAnimes(filters: animeFilterInput): Promise<AnimeEntity[]>;
+    getAnimes(filters: AnimeFilterInput): Promise<AnimeEntity[]>;
     getAnimeById(id: number): Promise<AnimeEntity | null>;
-    addAnime(anime: animeToCreateInput): Promise<AnimeEntity>;
+    addAnime(anime: AnimeToCreateInput): Promise<AnimeEntity>;
 }

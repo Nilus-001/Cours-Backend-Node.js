@@ -96,11 +96,15 @@ export const openapiSpec = {
                 type: "object",
                 additionalProperties: false,
                 properties: {
-                    name: {type: "string", minLength: 1},
-                    date: {type: "string", format: "date", nullable: true},
-                    url: {type: "string", format: "uri"},
-                    img: {type: "string", format: "uri"},
-                    rating: {type: "number", minimum: 0, maximum: 10}
+                    nom: {type: "string", minLength: 1},
+                    synopsis: {type: "string", nullable: true},
+                    image: {type: "string", format: "uri", nullable: true},
+                    dateAnnonce: {type: "string", format: "date", nullable: true},
+                    idCategorie: {type: "integer", minimum: 1, nullable: true},
+                    idGenres: idArray,
+                    idThemes: idArray,
+                    idProducteurs: idArray,
+                    idSources: idArray
                 }
             },
             User: {
@@ -181,8 +185,7 @@ export const openapiSpec = {
                 responses: {
                     200: {description: "Tokens", content: json(ref("TokenPair"))},
                     400: error("Validation échouée"),
-                    401: error("Identifiant ou mot de passe incorrect"),
-                    429: error("Trop de tentatives de connexion (5 échecs max par IP sur 15 min)")
+                    401: error("Identifiant ou mot de passe incorrect")
                 }
             }
         },

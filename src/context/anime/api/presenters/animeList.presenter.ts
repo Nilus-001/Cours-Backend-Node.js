@@ -1,15 +1,15 @@
 import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
-import {animeFilterInput} from "../../app/inputs/animeFilter.input";
-import {animePresenter, toAnimePresenter} from "./anime.presenter";
-import {animeFilterPresenter, toAnimeFilterPresenter} from "./animeFilter.presenter";
+import {AnimeFilterInput} from "../../app/inputs/animeFilter.input";
+import {AnimePresenter, toAnimePresenter} from "./anime.presenter";
+import {AnimeFilterPresenter, toAnimeFilterPresenter} from "./animeFilter.presenter";
 
-export class animeListPresenter {
-    animes!: animePresenter[];
-    filtres!: animeFilterPresenter;
+export class AnimeListPresenter {
+    animes!: AnimePresenter[];
+    filtres!: AnimeFilterPresenter;
     total!: number;
 }
 
-export const toAnimeListPresenter = (filters: animeFilterInput, animes: AnimeEntity[]): animeListPresenter => ({
+export const toAnimeListPresenter = (filters: AnimeFilterInput, animes: AnimeEntity[]): AnimeListPresenter => ({
     animes: animes.map(toAnimePresenter),
     filtres: toAnimeFilterPresenter(filters),
     total: animes.length,

@@ -1,13 +1,13 @@
 import {UserEntity} from "../../infra/persistances/entities/user.entity";
-import {userToCreateInput, userToUpdateInput} from "../inputs/user.input";
-import {userFilterInput} from "../inputs/userFilter.input";
+import {UserToCreateInput, UserToUpdateInput} from "../inputs/user.input";
+import {UserFilterInput} from "../inputs/userFilter.input";
 
 export interface IUserRepository {
-    getUsers(filters: userFilterInput): Promise<UserEntity[]>;
+    getUsers(filters: UserFilterInput): Promise<UserEntity[]>;
     getUserById(id: number): Promise<UserEntity | null>;
     getUserByIdentifiant(identifiant: string): Promise<UserEntity | null>;
-    addUser(user: userToCreateInput): Promise<UserEntity>;
-    updateUser(id: number, user: userToUpdateInput): Promise<UserEntity | null>;
+    addUser(user: UserToCreateInput): Promise<UserEntity>;
+    updateUser(id: number, user: UserToUpdateInput): Promise<UserEntity | null>;
     updateUserPerm(id: number, perm: bigint): Promise<UserEntity | null>;
     deleteUser(id: number): Promise<void>;
 }

@@ -3,7 +3,7 @@ import {IAuthUserRepository} from "../interfaces/auth-user.repository.interface"
 import {IRefreshTokenRepository} from "../interfaces/refresh-token.repository.interface";
 import {ITokenService} from "../interfaces/token.service.interface";
 import {TokenPair} from "../interfaces/auth.type";
-import {loginInput} from "../inputs/auth.input";
+import {LoginInput} from "../inputs/auth.input";
 import {InvalidCredentialsError} from "../../domain/errors/auth.errors";
 import {generateTokens} from "../utils/auth.utils";
 
@@ -14,7 +14,7 @@ export class LoginUseCase {
         private readonly tokenService: ITokenService,
     ) {}
 
-    async execute(credentials: loginInput): Promise<TokenPair> {
+    async execute(credentials: LoginInput): Promise<TokenPair> {
         const user = await this.authUserRepository.getUserWithPasswordByIdentifiant(credentials.identifiant);
         const passwordOk = user && await bcrypt.compare(credentials.motDePasse, user.motDePasse);
         if (!passwordOk) {

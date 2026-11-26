@@ -5,7 +5,7 @@ const IDENTIFIANT_FORMAT = {message: "L'identifiant ne peut contenir que des let
 const EMAIL_FORMAT = {message: "L'email n'est pas valide"};
 const normalizeEmail = ({value}: {value: unknown}) => typeof value === 'string' ? value.trim().toLowerCase() : value;
 
-export class userToCreateDTO {
+export class UserToCreateDto {
     @IsString()
     @IsNotEmpty({message: "L'identifiant est obligatoire"})
     @MinLength(3)
@@ -25,7 +25,7 @@ export class userToCreateDTO {
     motDePasse!: string;
 }
 
-export class userToUpdateDTO {
+export class UserToUpdateDto {
     @IsOptional()
     @IsString()
     @MinLength(3)
@@ -46,14 +46,14 @@ export class userToUpdateDTO {
     motDePasse?: string;
 }
 
-export class userIdParamDTO {
+export class UserIdParamDto {
     @Type(() => Number)
     @IsInt({message: "L'id doit être un entier"})
     @Min(1)
     id!: number;
 }
 
-export class userPermDTO {
+export class UserPermDto {
     @IsString()
     @Matches(/^[0-9]+$/, {message: "La permission doit être un entier positif"})
     perm!: string;

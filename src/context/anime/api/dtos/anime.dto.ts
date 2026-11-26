@@ -1,7 +1,7 @@
-import { IsString, IsNotEmpty, IsUrl, IsNumber, IsInt, Min, Max, IsOptional, IsDateString, IsArray, ArrayUnique } from "class-validator";
+import { IsString, IsNotEmpty, IsUrl, IsInt, Min, IsOptional, IsDateString, IsArray, ArrayUnique } from "class-validator";
 import { Type } from "class-transformer";
 
-export class animeToCreateDto {
+export class AnimeToCreateDto {
     @IsString()
     @IsNotEmpty({ message: "Le nom est obligatoire" })
     nom!: string;
@@ -52,32 +52,59 @@ export class animeToCreateDto {
     idSources?: number[];
 }
 
-export class animeToUpdateDto {
+export class AnimeToUpdateDto {
     @IsOptional()
     @IsString()
     @IsNotEmpty({ message: "Le nom ne peut pas être vide" })
-    name?: string;
+    nom?: string;
+
+    @IsOptional()
+    @IsString()
+    synopsis?: string | null;
+
+    @IsOptional()
+    @IsUrl()
+    image?: string | null;
 
     @IsOptional()
     @IsDateString()
-    date?: string | null;
+    dateAnnonce?: string | null;
 
     @IsOptional()
-    @IsUrl()
-    url?: string;
+    @IsInt()
+    @Min(1)
+    idCategorie?: number | null;
 
     @IsOptional()
-    @IsUrl()
-    img?: string;
+    @IsArray()
+    @ArrayUnique()
+    @IsInt({ each: true })
+    @Min(1, { each: true })
+    idGenres?: number[];
 
     @IsOptional()
-    @IsNumber()
-    @Min(0)
-    @Max(10)
-    rating?: number;
+    @IsArray()
+    @ArrayUnique()
+    @IsInt({ each: true })
+    @Min(1, { each: true })
+    idThemes?: number[];
+
+    @IsOptional()
+    @IsArray()
+    @ArrayUnique()
+    @IsInt({ each: true })
+    @Min(1, { each: true })
+    idProducteurs?: number[];
+
+    @IsOptional()
+    @IsArray()
+    @ArrayUnique()
+    @IsInt({ each: true })
+    @Min(1, { each: true })
+    idSources?: number[];
 }
 
-export class animeIdParamDto {
+export class AnimeIdParamDto {
     @Type(() => Number)
     @IsInt({ message: "L'id doit être un entier" })
     @Min(1)

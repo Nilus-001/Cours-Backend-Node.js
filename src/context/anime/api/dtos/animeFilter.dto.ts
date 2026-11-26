@@ -1,7 +1,7 @@
 import { IsString, IsInt, Min, IsOptional, IsDateString } from "class-validator";
 import { Type } from "class-transformer";
 
-export class animeFilterDto {
+export class AnimeFilterDto {
     @IsOptional()
     @IsString()
     nom?: string;

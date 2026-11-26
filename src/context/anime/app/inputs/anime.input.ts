@@ -1,4 +1,4 @@
-export class animeToCreateInput {
+export class AnimeToCreateInput {
     nom!: string;
     synopsis?: string | null;
     image?: string | null;
@@ -10,7 +10,7 @@ export class animeToCreateInput {
     idSources?: number[];
 }
 
-export class animeToUpdateInput {
+export class AnimeToUpdateInput {
     nom?: string;
     synopsis?: string | null;
     image?: string | null;

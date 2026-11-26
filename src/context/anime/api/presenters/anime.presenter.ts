@@ -1,33 +1,33 @@
 import {AnimeEntity} from "../../infra/persistances/entities/anime.entity";
 
-export class libellePresenter {
+export class LibellePresenter {
     id!: number;
     libelle!: string;
 }
 
-export class nomPresenter {
+export class NomPresenter {
     id!: number;
     nom!: string;
 }
 
-export class animeSourcePresenter {
+export class AnimeSourcePresenter {
     id!: number;
     auteur!: string | null;
     dateParution!: string | null;
-    type!: libellePresenter | null;
+    type!: LibellePresenter | null;
 }
 
-export class animePresenter {
+export class AnimePresenter {
     id!: number;
     nom!: string;
     synopsis!: string | null;
     image!: string | null;
     dateAnnonce!: string | null;
-    categorie!: libellePresenter | null;
-    genres!: libellePresenter[];
-    themes!: libellePresenter[];
-    producteurs!: nomPresenter[];
-    sources!: animeSourcePresenter[];
+    categorie!: LibellePresenter | null;
+    genres!: LibellePresenter[];
+    themes!: LibellePresenter[];
+    producteurs!: NomPresenter[];
+    sources!: AnimeSourcePresenter[];
 }
 
 const toDateString = (date: Date | string | null | undefined): string | null => {
@@ -35,7 +35,7 @@ const toDateString = (date: Date | string | null | undefined): string | null => 
     return date instanceof Date ? date.toISOString().split('T')[0] : date;
 }
 
-export const toAnimePresenter = (anime: AnimeEntity): animePresenter => ({
+export const toAnimePresenter = (anime: AnimeEntity): AnimePresenter => ({
     id: anime.id,
     nom: anime.nom,
     synopsis: anime.synopsis ?? null,

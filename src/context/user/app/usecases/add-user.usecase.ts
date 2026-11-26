@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import {IUserRepository} from "../interfaces/user.repository.interface";
 import {UserEntity} from "../../infra/persistances/entities/user.entity";
-import {userToAddInput} from "../inputs/user.input";
+import {UserToAddInput} from "../inputs/user.input";
 import {ensureIdentifiantDisponible, SALT_ROUNDS} from "../utils/user.utils";
 import {emit} from "../../../../core/events/eventBus";
 import {USER_PERMS} from "../../../../core/http/perms/perm.list";
@@ -9,7 +9,7 @@ import {USER_PERMS} from "../../../../core/http/perms/perm.list";
 export class AddUserUseCase {
     constructor(private readonly userRepository: IUserRepository) {}
 
-    async execute(user: userToAddInput): Promise<UserEntity> {
+    async execute(user: UserToAddInput): Promise<UserEntity> {
         await ensureIdentifiantDisponible(this.userRepository, user.identifiant);
         const created = await this.userRepository.addUser({
             identifiant: user.identifiant,

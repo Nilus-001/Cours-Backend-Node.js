@@ -1,11 +1,11 @@
 import {db} from "../../../../../core/configs/database/typeorm.config";
 import {UserEntity} from "../entities/user.entity";
-import {userFilterInput} from "../../../app/inputs/userFilter.input";
-import {userToCreateInput, userToUpdateInput} from "../../../app/inputs/user.input";
+import {UserFilterInput} from "../../../app/inputs/userFilter.input";
+import {UserToCreateInput, UserToUpdateInput} from "../../../app/inputs/user.input";
 
 const userRepository = () => db.getRepository(UserEntity);
 
-export const getUsers = async (filters: userFilterInput): Promise<UserEntity[]> => {
+export const getUsers = async (filters: UserFilterInput): Promise<UserEntity[]> => {
     const query = userRepository()
         .createQueryBuilder('user')
         .orderBy('user.identifiant', 'ASC');
@@ -36,7 +36,7 @@ export const getUserWithPasswordByIdentifiant = async (identifiant: string): Pro
         .getOne();
 }
 
-export const addUser = async (user: userToCreateInput): Promise<UserEntity> => {
+export const addUser = async (user: UserToCreateInput): Promise<UserEntity> => {
     const created = userRepository().create({
         identifiant: user.identifiant,
         email: user.email ?? null,
@@ -47,7 +47,7 @@ export const addUser = async (user: userToCreateInput): Promise<UserEntity> => {
     return getUserById(saved.id);
 }
 
-export const updateUser = async (id: number, user: userToUpdateInput): Promise<UserEntity | null> => {
+export const updateUser = async (id: number, user: UserToUpdateInput): Promise<UserEntity | null> => {
     const changes: Partial<UserEntity> = {};
     if (user.identifiant !== undefined) changes.identifiant = user.identifiant;
     if (user.email !== undefined) changes.email = user.email;

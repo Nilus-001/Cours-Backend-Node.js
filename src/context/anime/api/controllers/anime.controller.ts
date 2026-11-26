@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 import {plainToInstance} from "class-transformer";
-import {animeIdParamDto} from "../dtos/anime.dto";
-import {animeFilterDto} from "../dtos/animeFilter.dto";
-import {animeFilterInput} from "../../app/inputs/animeFilter.input";
+import {AnimeIdParamDto} from "../dtos/anime.dto";
+import {AnimeFilterDto} from "../dtos/animeFilter.dto";
+import {AnimeFilterInput} from "../../app/inputs/animeFilter.input";
 import {GetAnimesUseCase} from "../../app/usecases/get-anime.usecase";
 import {typeAnimeRepository} from "../../infra/persistances/repositories/anime.type.repository";
 import {toAnimeListPresenter} from "../presenters/animeList.presenter";
@@ -15,8 +15,8 @@ const getAnimeByIdUseCase = new GetAnimeByIdUseCase(typeAnimeRepository);
 const addAnimeUseCase = new AddAnimeUseCase(typeAnimeRepository);
 
 export const getAnimes = async (req: Request, res: Response) => {
-    const {nom, dateAnnonce, idCategorie, idGenre, idTheme} = plainToInstance(animeFilterDto, req.query);
-    const filters: animeFilterInput = {nom: nom?.trim(), dateAnnonce, idCategorie, idGenre, idTheme};
+    const {nom, dateAnnonce, idCategorie, idGenre, idTheme} = plainToInstance(AnimeFilterDto, req.query);
+    const filters: AnimeFilterInput = {nom: nom?.trim(), dateAnnonce, idCategorie, idGenre, idTheme};
 
     const animes = await getAnimesUseCase.execute(filters);
 
@@ -35,7 +35,7 @@ export const updateAnime = (req , res) => {
     const data = req.body;
 }
 export const getAnimeById = async (req: Request, res: Response) => {
-    const {id} = plainToInstance(animeIdParamDto, req.params);
+    const {id} = plainToInstance(AnimeIdParamDto, req.params);
 
     const anime = await getAnimeByIdUseCase.execute(id);
 

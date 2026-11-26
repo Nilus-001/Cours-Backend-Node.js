@@ -1,11 +1,11 @@
 import {db} from "../../../../../core/configs/database/typeorm.config";
 import {AnimeEntity} from "../entities/anime.entity";
-import {animeToCreateInput} from "../../../app/inputs/anime.input";
-import {animeFilterInput} from "../../../app/inputs/animeFilter.input";
+import {AnimeToCreateInput} from "../../../app/inputs/anime.input";
+import {AnimeFilterInput} from "../../../app/inputs/animeFilter.input";
 
 const animeRepository = () => db.getRepository(AnimeEntity);
 
-export const getAnimes = async (filters: animeFilterInput): Promise<AnimeEntity[]> => {
+export const getAnimes = async (filters: AnimeFilterInput): Promise<AnimeEntity[]> => {
     const query = animeRepository()
         .createQueryBuilder('anime')
         .leftJoinAndSelect('anime.categorie', 'categorie')
@@ -44,7 +44,7 @@ export const getAnimeById = async (id: number): Promise<AnimeEntity | null> => {
 
 const toRefs = (ids?: number[]) => (ids ?? []).map((id) => ({id}));
 
-export const addAnime = async (anime: animeToCreateInput): Promise<AnimeEntity> => {
+export const addAnime = async (anime: AnimeToCreateInput): Promise<AnimeEntity> => {
     const created = animeRepository().create({
         nom: anime.nom,
         synopsis: anime.synopsis ?? null,
