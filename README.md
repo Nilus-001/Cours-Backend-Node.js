@@ -38,30 +38,24 @@ APP_PORT=3000
 | Mailer | `MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE`, `MAIL_USER`, `MAIL_PASSWORD`, `MAIL_FROM` |
 
 ### Base de données
-1. Créer la base MySQL indiquée dans `DB_DATABASE` :
 
-   ```
-   mysql -u <user> -p -e "CREATE DATABASE <DB_DATABASE> CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-   ```
+Les commandes suivantes utilisent les identifiants du `.env` et fonctionnent sous Windows, macOS et Linux, sans client `mysql` installé. La base `DB_DATABASE` est créée automatiquement si elle n'existe pas.
 
-2. Créer les tables, au choix :
+| Commande | Action |
+|---|---|
+| `npm run db:schema` | Crée les tables (supprime les tables existantes et leurs données) |
+| `npm run db:seed` | Remplit la base avec des données de démo (vide toutes les tables) |
+| `npm run db:reset` | Enchaîne `db:schema` puis `db:seed` |
 
-   - **Import du script SQL** : `synchronize` est désactivé par défaut, donc TypeORM ne crée pas les tables. Importer le schéma :
+Installation complète avec les données de démo :
 
-     ```
-     mysql -u <user> -p <DB_DATABASE> < src/core/database/schema.sql
-     ```
+```bash
+npm run db:reset
+```
 
-   - **Génération automatique** : passer `synchronize: true` dans `src/core/configs/database/typeorm.config.ts`. TypeORM crée alors les tables au démarrage de l'API. À utiliser uniquement en développement.
+Comptes de démo : `admin`, `first_user` — mot de passe `password123`.
 
-3. (Optionnel) Remplir la base avec des données de démo (vide toutes les tables) :
-
-   ```
-   mysql -u <user> -p <DB_DATABASE> < src/core/database/seeders/01_catalogue.seed.sql
-   mysql -u <user> -p <DB_DATABASE> < src/core/database/seeders/02_users.seed.sql
-   ```
-
-   Comptes : `admin`, `nils`, `sakura` — mot de passe `password123`
+Alternative à `db:schema` : passer `synchronize: true` dans `src/core/configs/database/typeorm.config.ts`. TypeORM crée alors les tables au démarrage de l'API. À utiliser uniquement en développement.
 
 ### Mailer
 
