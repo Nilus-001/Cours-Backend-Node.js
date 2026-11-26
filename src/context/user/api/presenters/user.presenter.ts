@@ -13,13 +13,13 @@ export const toUserPublicPresenter = (user: UserEntity): UserPublicPresenter => 
 export class UserPresenter {
     id!: number;
     identifiant!: string;
-    email!: string | null;
+    email!: string;
     perm!: string;
 }
 
 export const toUserPresenter = (user: UserEntity): UserPresenter => ({
     id: user.id,
     identifiant: user.identifiant,
-    email: user.email ?? null,
+    email: user.email,
     perm: user.perm.toString(),
 });

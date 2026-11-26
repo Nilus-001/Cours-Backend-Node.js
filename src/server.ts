@@ -11,6 +11,7 @@ import userRoutes from "./context/user/api/routes/user.routes";
 import authRoutes from "./context/auth/api/routes/auth.routes";
 import {errorMiddleware, notFoundMiddleware} from "./core/http/errors/middleware/api.middleware";
 import {registerListeners} from "./core/events/listeners";
+import {verifyMailer} from "./core/mailer/nodemailer.mailer";
 
 const PORT = 8080;
 
@@ -38,6 +39,7 @@ app.use(errorMiddleware);
 
 try{
     await db.initialize();
+    await verifyMailer();
     registerListeners();
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);

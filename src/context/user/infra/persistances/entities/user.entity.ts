@@ -15,8 +15,8 @@ export class UserEntity {
     @Column('varchar', {unique: true})
     identifiant!: string;
 
-    @Column('varchar', {length: 255, nullable: true})
-    email!: string | null;
+    @Column('varchar', {length: 255})
+    email!: string;
 
     @Column('varchar', {name: 'mot_de_passe', select: false})
     motDePasse!: string;

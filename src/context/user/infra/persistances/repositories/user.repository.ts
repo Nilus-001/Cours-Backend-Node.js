@@ -39,7 +39,7 @@ export const getUserWithPasswordByIdentifiant = async (identifiant: string): Pro
 export const addUser = async (user: UserToCreateInput): Promise<UserEntity> => {
     const created = userRepository().create({
         identifiant: user.identifiant,
-        email: user.email ?? null,
+        email: user.email,
         motDePasse: user.hashedPassword,
         perm: user.perm,
     });

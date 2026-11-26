@@ -1,4 +1,4 @@
-import {IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Matches, MaxLength, Min, MinLength} from "class-validator";
+import {IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Matches, MaxLength, Min, MinLength, ValidateIf} from "class-validator";
 import {Transform, Type} from "class-transformer";
 
 const IDENTIFIANT_FORMAT = {message: "L'identifiant ne peut contenir que des lettres, chiffres, '.', '_' et '-'"};
@@ -13,11 +13,11 @@ export class UserToCreateDto {
     @Matches(/^[a-zA-Z0-9._-]+$/, IDENTIFIANT_FORMAT)
     identifiant!: string;
 
-    @IsOptional()
     @Transform(normalizeEmail)
+    @IsNotEmpty({message: "L'email est obligatoire"})
     @IsEmail({}, EMAIL_FORMAT)
     @MaxLength(255)
-    email?: string | null;
+    email!: string;
 
     @IsString()
     @MinLength(8, {message: "Le mot de passe doit contenir au moins 8 caractères"})
@@ -33,11 +33,12 @@ export class UserToUpdateDto {
     @Matches(/^[a-zA-Z0-9._-]+$/, IDENTIFIANT_FORMAT)
     identifiant?: string;
 
-    @IsOptional()
+    @ValidateIf((o) => o.email !== undefined)
     @Transform(normalizeEmail)
+    @IsNotEmpty({message: "L'email est obligatoire"})
     @IsEmail({}, EMAIL_FORMAT)
     @MaxLength(255)
-    email?: string | null;
+    email?: string;
 
     @IsOptional()
     @IsString()

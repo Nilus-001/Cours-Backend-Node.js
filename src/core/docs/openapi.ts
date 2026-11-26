@@ -112,7 +112,7 @@ export const openapiSpec = {
                 properties: {
                     id: {type: "integer"},
                     identifiant: {type: "string"},
-                    email: {type: "string", format: "email", nullable: true},
+                    email: {type: "string", format: "email"},
                     perm: {type: "string", pattern: "^[0-9]+$", description: "Bitfield des permissions (BigInt en string)", example: "15"}
                 }
             },
@@ -133,11 +133,11 @@ export const openapiSpec = {
             },
             UserCreate: {
                 type: "object",
-                required: ["identifiant", "motDePasse"],
+                required: ["identifiant", "email", "motDePasse"],
                 additionalProperties: false,
                 properties: {
                     identifiant: {type: "string", minLength: 3, maxLength: 50, pattern: "^[a-zA-Z0-9._-]+$"},
-                    email: {type: "string", format: "email", maxLength: 255, nullable: true},
+                    email: {type: "string", format: "email", maxLength: 255},
                     motDePasse: {type: "string", format: "password", minLength: 8, maxLength: 72}
                 }
             },
@@ -146,7 +146,7 @@ export const openapiSpec = {
                 additionalProperties: false,
                 properties: {
                     identifiant: {type: "string", minLength: 3, maxLength: 50, pattern: "^[a-zA-Z0-9._-]+$"},
-                    email: {type: "string", format: "email", maxLength: 255, nullable: true},
+                    email: {type: "string", format: "email", maxLength: 255},
                     motDePasse: {type: "string", format: "password", minLength: 8, maxLength: 72}
                 }
             },
