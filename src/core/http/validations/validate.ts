@@ -1,7 +1,8 @@
-import {Source} from "../../../types/source";
 import { plainToInstance, ClassConstructor } from "class-transformer";
 import { validate } from "class-validator";
 import { Request, Response, NextFunction } from "express";
+
+type Source = "body" | "query" | "params";
 
 export function ValidateDto<T extends object> (dto: ClassConstructor<T>, source: Source = "body"){
     return async (req: Request, res: Response, next: NextFunction) => {
