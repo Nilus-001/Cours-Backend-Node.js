@@ -181,7 +181,8 @@ export const openapiSpec = {
                 responses: {
                     200: {description: "Tokens", content: json(ref("TokenPair"))},
                     400: error("Validation échouée"),
-                    401: error("Identifiant ou mot de passe incorrect")
+                    401: error("Identifiant ou mot de passe incorrect"),
+                    429: error("Trop de tentatives de connexion (5 échecs max par IP sur 15 min)")
                 }
             }
         },

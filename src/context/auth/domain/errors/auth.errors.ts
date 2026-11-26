@@ -30,6 +30,12 @@ export class InvalidCredentialsError extends DomainError {
     }
 }
 
+export class TooManyLoginAttemptsError extends DomainError {
+    constructor(meta?: any) {
+        super(429, "Err-auth-too-many-429", "Trop de tentatives de connexion, réessayez plus tard", meta);
+    }
+}
+
 export class RefreshTokenInvalidError extends DomainError {
     constructor(meta?: any) {
         super(401, "Err-refresh-invalid-401", "Refresh token invalide ou expiré", meta);
