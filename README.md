@@ -38,16 +38,21 @@ APP_PORT=3000
 | Mailer | `MAIL_HOST`, `MAIL_PORT`, `MAIL_SECURE`, `MAIL_USER`, `MAIL_PASSWORD`, `MAIL_FROM` |
 
 ### Base de données
+1. Créer la base MySQL indiquée dans `DB_DATABASE` :
 
-Créer la base MySQL indiquée dans `DB_DATABASE`.
+   ```
+   mysql -u <user> -p -e "CREATE DATABASE <DB_DATABASE> CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+   ```
 
-Le `synchronize` TypeORM est désactivé : les tables ne sont pas créées automatiquement.
+2. Créer les tables, au choix :
 
-Activer `synchronize` dans `src/core/configs/database/typeorm.config.ts` pour générer le schéma automatiquement.
+   - **Import du script SQL** : `synchronize` est désactivé par défaut, donc TypeORM ne crée pas les tables. Importer le schéma :
 
-```bash
-mysql -u <user> -p <database> < sql/<fichier>.sql
-```
+     ```
+     mysql -u <user> -p <DB_DATABASE> < sql/schema.sql
+     ```
+
+   - **Génération automatique** : passer `synchronize: true` dans `src/core/configs/database/typeorm.config.ts`. TypeORM crée alors les tables au démarrage de l'API. À utiliser uniquement en développement.
 
 ### Mailer
 
