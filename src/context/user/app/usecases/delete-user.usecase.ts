@@ -1,6 +1,7 @@
 import {IUserRepository} from "../interfaces/user.repository.interface";
 import {UserDependenciesError} from "../../domain/errors/user.errors";
 import {getExistingUser} from "../utils/user.utils";
+import {emit} from "../../../../core/events/eventBus";
 
 export class DeleteUserUseCase {
     constructor(private readonly userRepository: IUserRepository) {}
@@ -15,5 +16,6 @@ export class DeleteUserUseCase {
             }
             throw e;
         }
+        emit('user.deleted', {id});
     }
 }

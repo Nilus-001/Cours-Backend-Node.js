@@ -8,7 +8,7 @@ const router = Router();
 
 router.post('/login', ValidateDto(userLoginDTO), authController.login);
 router.post('/refresh', ValidateDto(refreshTokenDTO), authController.refresh);
-router.post('/logout', ValidateDto(refreshTokenDTO), authController.logout);
+router.post('/logout', authenticate, ValidateDto(refreshTokenDTO), authController.logout);
 router.post('/logout-all', authenticate, authController.logoutAll);
 router.get('/me', authenticate, authController.me);
 

@@ -18,6 +18,12 @@ export class TokenInvalidError extends DomainError {
     }
 }
 
+export class TokenRevokedError extends DomainError {
+    constructor(meta?: any) {
+        super(401, "Err-token-revoked-401", "Token d'accès révoqué, utilisez /auth/refresh", meta);
+    }
+}
+
 export class InvalidCredentialsError extends DomainError {
     constructor(meta?: any) {
         super(401, "Err-auth-credentials-401", "Identifiant ou mot de passe incorrect", meta);

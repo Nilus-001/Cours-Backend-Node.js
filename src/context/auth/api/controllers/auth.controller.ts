@@ -25,7 +25,7 @@ export const refresh = async (req: Request, res: Response) => {
 }
 
 export const logout = async (req: Request, res: Response) => {
-    await logoutUseCase.execute(req.body.refreshToken);
+    await logoutUseCase.execute(req.body.refreshToken, req.user);
     res.status(204).send();
 }
 

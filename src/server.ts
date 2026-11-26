@@ -10,7 +10,7 @@ import {db} from "./core/configs/database/typeorm.config";
 import userRoutes from "./context/user/api/routes/user.routes";
 import authRoutes from "./context/auth/api/routes/auth.routes";
 import {errorMiddleware, notFoundMiddleware} from "./core/http/errors/middleware/api.middleware";
-import {registerListeners} from "./listeners";
+import {registerListeners} from "./core/events/listeners";
 
 const PORT = 8080;
 

@@ -200,11 +200,13 @@ export const openapiSpec = {
         "/auth/logout": {
             post: {
                 tags: ["Auth"],
-                summary: "Déconnexion de la session",
+                summary: "Déconnexion de la session (révoque l'access token et le refresh token)",
+                security: bearer,
                 requestBody: {required: true, content: json(ref("RefreshToken"))},
                 responses: {
                     204: {description: "Déconnecté"},
-                    400: error("Validation échouée")
+                    400: error("Validation échouée"),
+                    401: error("Token manquant, expiré, invalide ou révoqué")
                 }
             }
         },
@@ -215,7 +217,7 @@ export const openapiSpec = {
                 security: bearer,
                 responses: {
                     204: {description: "Toutes les sessions fermées"},
-                    401: error("Token manquant, expiré ou invalide")
+                    401: error("Token manquant, expiré, invalide ou révoqué")
                 }
             }
         },
@@ -226,7 +228,7 @@ export const openapiSpec = {
                 security: bearer,
                 responses: {
                     200: {description: "Utilisateur", content: json(ref("User"))},
-                    401: error("Token manquant, expiré ou invalide")
+                    401: error("Token manquant, expiré, invalide ou révoqué")
                 }
             }
         },
@@ -277,7 +279,7 @@ export const openapiSpec = {
                 responses: {
                     200: {description: "Utilisateur modifié", content: json(ref("User"))},
                     400: error("Validation échouée"),
-                    401: error("Token manquant, expiré ou invalide"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Action sur un autre compte sans MANAGE_USERS"),
                     404: error("Utilisateur introuvable"),
                     409: error("Identifiant déjà utilisé")
@@ -294,7 +296,7 @@ export const openapiSpec = {
                 responses: {
                     200: {description: "Permissions modifiées", content: json(ref("User"))},
                     400: error("Validation échouée ou permission inconnue"),
-                    401: error("Token manquant, expiré ou invalide"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission insuffisante"),
                     404: error("Utilisateur introuvable")
                 }
@@ -309,7 +311,7 @@ export const openapiSpec = {
                 responses: {
                     204: {description: "Utilisateur supprimé"},
                     400: error("Validation échouée"),
-                    401: error("Token manquant, expiré ou invalide"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Action sur un autre compte sans MANAGE_USERS"),
                     404: error("Utilisateur introuvable"),
                     409: error("L'utilisateur a des avis ou des animes dans sa liste")
@@ -342,7 +344,7 @@ export const openapiSpec = {
                 responses: {
                     201: {description: "Anime créé", content: json(ref("Anime"))},
                     400: error("Validation échouée ou référence inexistante"),
-                    401: error("Token manquant, expiré ou invalide"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission CREATE_ANIME requise")
                 }
             }
@@ -369,7 +371,7 @@ export const openapiSpec = {
                 responses: {
                     200: {description: "Anime modifié", content: json(ref("Anime"))},
                     400: error("Validation échouée"),
-                    401: error("Token manquant, expiré ou invalide"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission EDIT_ANIME requise"),
                     404: error("Anime introuvable")
                 }
@@ -384,7 +386,7 @@ export const openapiSpec = {
                 responses: {
                     204: {description: "Anime supprimé"},
                     400: error("Validation échouée"),
-                    401: error("Token manquant, expiré ou invalide"),
+                    401: error("Token manquant, expiré, invalide ou révoqué"),
                     403: error("Permission DELETE_ANIME requise"),
                     404: error("Anime introuvable")
                 }
